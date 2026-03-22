@@ -15,6 +15,9 @@ export default function Form1Page() {
 
   console.log("layer1data", layer1data)
   console.log("form1result", form1Id)
+
+
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);

@@ -102,11 +102,12 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight, Sparkles, Activity } from "lucide-react";
+import Link from "next/link";
 
 const DashboardHero = () => {
   return (
     <section className="relative overflow-hidden py-20 md:py-28 bg-[#FAF9F6]">
-      
+
       {/* Dynamic Background Accents */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#E8F3EE] rounded-full blur-[120px] opacity-50 translate-x-1/2 -translate-y-1/2" />
       <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-[#F2F5F3] rounded-full blur-[100px] opacity-60 -translate-x-1/3 translate-y-1/3" />
@@ -136,20 +137,24 @@ const DashboardHero = () => {
 
             {/* Description */}
             <p className="text-[#5C6361] text-lg leading-relaxed mb-10 max-w-lg font-light">
-              This is your first clinical-grade check-in. Our AI will build your initial 
+              This is your first clinical-grade check-in. Our AI will build your initial
               baseline to detect risks before they arise. It takes just <span className="font-semibold text-[#4A675D]">3 minutes</span>.
             </p>
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-5">
-              <motion.button 
-                whileHover={{ scale: 1.02, backgroundColor: "#3D564D" }}
-                whileTap={{ scale: 0.98 }}
-                className="bg-[#4A675D] text-white px-8 py-4 rounded-2xl text-base font-bold shadow-[0_15px_30px_-10px_rgba(74,103,93,0.3)] flex items-center justify-center gap-3 group transition-all"
-              >
-                Start Daily Check-In
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </motion.button>
+
+              <Link href="/Checkin">
+
+                <motion.button
+                  whileHover={{ scale: 1.02, backgroundColor: "#3D564D" }}
+                  whileTap={{ scale: 0.98 }}
+                  className="bg-[#4A675D] text-white px-8 py-4 rounded-2xl text-base font-bold shadow-[0_15px_30px_-10px_rgba(74,103,93,0.3)] flex items-center justify-center gap-3 group transition-all"
+                >
+                  Start Daily Check-In
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </motion.button>
+              </Link>
 
               <button className="px-8 py-4 rounded-2xl text-base font-bold text-[#4A675D] border border-[#DCE4E1] bg-white/50 backdrop-blur-sm hover:bg-white transition-all">
                 View Methodology
@@ -205,8 +210,8 @@ const DashboardHero = () => {
                     top: `${30 + i * 15}%`,
                     left: `${10 + i * 20}%`,
                   }}
-                  animate={{ 
-                    y: [0, -30, 0], 
+                  animate={{
+                    y: [0, -30, 0],
                     opacity: [0.3, 0.8, 0.3],
                     scale: [1, 1.5, 1]
                   }}

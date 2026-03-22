@@ -35,7 +35,7 @@ const AILayer2 = () => {
 
 
 
-console.log(form1Id, form2Id,)
+// console.log(form1Id, form2Id,)
     return (
         <div>
 

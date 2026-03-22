@@ -31,16 +31,20 @@ export default function Home() {
         <UserButton></UserButton>
       </p>
       <Form1Page></Form1Page>
-
+      {/* 
       {Object.keys(layer1data).length > 0 && (
         <Form2Page />
-      )}
+      )} */}
+      
+      {layer1data.form2Required &&
+        <Form2Page />
+      }
 
 
       <WeeklyFeedbackForm></WeeklyFeedbackForm>
 
 
-      
+
 
       <div className="min-h-screen bg-background">
         {/* <Navbar /> */}
