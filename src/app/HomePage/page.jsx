@@ -8,6 +8,9 @@ import Footer from '@/components/LandingPageComponenets/Footer'
 
 
 const HomePage = () => {
+
+
+    
     return (
         <div className="min-h-screen bg-background">
             <DashboardNavbar />

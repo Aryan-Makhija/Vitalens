@@ -456,7 +456,7 @@ const SuccessMessage = () => (
                 Information has been completed successfully. Your multi-layer assessment is now ready for final synthesis.
             </p>
             <Link
-                href="/HomePage"
+                href="/Checkin/FinalPage"
                 className="block w-full bg-[#4A675D] text-white py-4 rounded-2xl font-bold shadow-lg shadow-[#4A675D]/20 hover:bg-[#3D564D] transition-all"
             >
                 View Final Analysis

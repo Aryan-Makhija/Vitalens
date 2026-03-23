@@ -19,7 +19,7 @@ const Form1 = () => {
   const [form2, setform2] = useState(false)
 
   const { setlayer1data, form1Id, setform1Id, layer1data } = useContext(Layer1Response);
-  console.log(layer1data)
+  // console.log(layer1data)
   const [formData, setFormData] = useState({
     age: "",
     gender: "male",
@@ -139,6 +139,16 @@ const Form1 = () => {
   }
 
   if (submitted) return <SuccessView form2={form2}></SuccessView>
+
+
+
+
+
+
+
+
+
+
 
   return (
     <div className="min-h-screen bg-[#FAF9F6] py-12 px-6">

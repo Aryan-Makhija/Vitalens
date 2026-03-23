@@ -22,7 +22,7 @@ export async function GET() {
             )
         }
 
-        const [suggestion] = await db.select().from(layer2Suggestions).where(eq(layer2Suggestions.id, user?.primaryEmailAddress?.emailAddress)).orderBy(desc(layer2Suggestions.createdAt)).limit(1)
+        const [suggestion] = await db.select().from(layer2Suggestions).where(eq(layer2Suggestions.userEmail, user?.primaryEmailAddress?.emailAddress)).orderBy(desc(layer2Suggestions.createdAt)).limit(1)
 
 
         return NextResponse.json({

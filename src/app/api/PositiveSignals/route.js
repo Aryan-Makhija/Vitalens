@@ -20,7 +20,7 @@ export async function GET() {
         }
 
 
-        const [positivesignal] = await db.select().from(layer2PositiveSignals).where(eq(layer2PositiveSignals.id, user?.primaryEmailAddress?.emailAddress)).orderBy(desc(layer2PositiveSignals.createdAt)).limit(1)
+        const [positivesignal] = await db.select().from(layer2PositiveSignals).where(eq(layer2PositiveSignals.userEmail, user?.primaryEmailAddress?.emailAddress)).orderBy(desc(layer2PositiveSignals.createdAt)).limit(1)
 
 
 
