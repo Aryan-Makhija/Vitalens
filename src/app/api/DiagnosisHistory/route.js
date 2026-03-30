@@ -66,7 +66,7 @@ export async function GET() {
             return NextResponse.json({ message: "user not Authenticated" }, { status: 401 })
         }
 
-        const [result] = await db.select().from(diagnosisHistory).where(eq(diagnosisHistory.userEmail, user.primaryEmailAddress.emailAddress))
+        const result = await db.select().from(diagnosisHistory).where(eq(diagnosisHistory.userEmail, user.primaryEmailAddress.emailAddress))
 
         return NextResponse.json({
             Allhistory: result

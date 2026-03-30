@@ -150,9 +150,9 @@ RETURN JSON ONLY USING THIS SCHEMA:
 `;
 
 
-export async function POST(req) {
+export async function POST(request) {
     try {
-        const { form1Id, form2Id, layer1ResultId } = await req.json();
+        const { form1Id,form2Id, layer1ResultId } = await request.json();
 
         // ---------------------------
         // 2️⃣ Fetch all data

@@ -10,12 +10,16 @@ import {
 import Link from "next/link";
 
 export default function Phase2() {
-    const { layer1data, form1Id, form2Id, setform2Id, setlayer2Id } = useContext(Layer1Response);
+    const { layer1data, form2Id, form1Id, setform2Id, setlayer2Id, layer2Id } = useContext(Layer1Response);
+
+
     const [error, setError] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [aiAnalyzing, setAiAnalyzing] = useState(false);
     const [submitted, setSubmitted] = useState(false);
     const [analysisComplete, setAnalysisComplete] = useState(false);
+
+    // const [id, setid] = useState()
 
     const requiredContextModules = layer1data?.requiredContextModules || {};
 
@@ -126,7 +130,7 @@ export default function Phase2() {
             if (response.ok) {
                 const data = await response.json();
                 const newForm2Id = data.form2Id; // Capture ID immediately
-                setform2Id(newForm2Id);
+                // setform2Id(newForm2Id);
 
                 setAiAnalyzing(true);
                 await Ailayer2(newForm2Id); // Pass directly to avoid state lag
@@ -163,7 +167,7 @@ export default function Phase2() {
             const data = await res.json()
             setlayer2Id(data.reportId)
 
-
+            // setid(data.reportId)
 
             setAnalysisComplete(true);
             setTimeout(() => {
@@ -212,7 +216,7 @@ export default function Phase2() {
         );
     }
 
-    if (submitted) return <SuccessMessage></SuccessMessage>
+    if (submitted) return <SuccessMessage layer2ReportId={layer2Id}></SuccessMessage>
 
     return (
         <div className="min-h-screen bg-[#FAF9F6] py-16 px-6">
@@ -441,7 +445,8 @@ const CheckboxCard = ({ label, checked, onChange }) => (
 
 
 
-const SuccessMessage = () => (
+const SuccessMessage = ({ layer2ReportId }) => (
+
 
     <motion.div
         initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}

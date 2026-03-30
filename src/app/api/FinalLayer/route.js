@@ -1,5 +1,5 @@
 import db from "@/lib/config/db";
-import { finalResultsTable, layer2Reports } from "@/lib/config/schema";
+import { diagnosisHistory, finalResultsTable, layer2Reports } from "@/lib/config/schema";
 import { currentUser } from "@clerk/nextjs/server";
 
 import { GoogleGenAI } from "@google/genai";
@@ -112,9 +112,10 @@ Output:
 - No markdown, no extra fields, no explanations.
 `;
 
-export async function POST(req) {
+export async function POST(request) {
     try {
-        const { layer2ReportId } = await req.json();
+        // const { id } = await params;
+        const { layer2ReportId } = await request.json();
         if (!layer2ReportId) {
             return NextResponse.json({ error: "layer2ReportId is required" }, { status: 400 });
         }
@@ -253,6 +254,45 @@ ${JSON.stringify(layer2Report, null, 2)}
             })
             .returning();
 
+
+        // -----------------------------------
+        //  Maintaining the Diagnosis history
+        // ----------------------------------
+
+
+
+        await db.insert(diagnosisHistory).values({
+            userEmail: layer2Report.userEmail,
+            layer2ReportId,
+            finalResultsId: saved.id,
+            finalStatus: saved.finalStatus,
+            statusHeadline: saved.statusHeadline,
+            statusSummary: saved.statusSummary,
+
+        })
+
+
+        // await db.transaction(async (tx) => {
+        //     const [saved] = await tx
+        //         .insert(finalResultsTable)
+        //         .values({
+        //             userEmail: layer2Report.userEmail,
+        //             layer2ReportId,
+        //             ...finalLayerOutput,
+        //             ...governanceFields
+        //         })
+        //         .returning();
+
+        //     await tx.insert(diagnosisHistory).values({
+        //         userEmail: layer2Report.userEmail,
+        //         layer2ReportId,
+        //         finalResultsId: saved.id,
+        //         finalStatus: saved.finalStatus,
+        //         statusHeadline: saved.statusHeadline,
+        //         statusSummary: saved.statusSummary,
+        //     });
+        // });
+
         // ----------------------------
         // 8️⃣ Return response
         // ----------------------------
@@ -306,7 +346,7 @@ export async function GET() {
         }
 
 
-        const [finalresult] = await db.select().from(finalResultsTable).where(eq(finalResultsTable.userEmail, user.primaryEmailAddress.emailAddress)).orderBy(desc(finalResultsTable.createdAt)).limit(1).then(rows => rows[0])
+        const [finalresult] = await db.select().from(finalResultsTable).where(eq(finalResultsTable.userEmail, user.primaryEmailAddress.emailAddress)).orderBy(desc(finalResultsTable.createdAt)).limit(1)
 
 
         return NextResponse.json({

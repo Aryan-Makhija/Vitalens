@@ -138,7 +138,7 @@ const Form1 = () => {
     );
   }
 
-  if (submitted) return <SuccessView form2={form2}></SuccessView>
+  if (submitted) return <SuccessView form2={form2}  ></SuccessView>
 
 
 
