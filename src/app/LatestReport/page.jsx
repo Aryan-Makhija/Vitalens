@@ -131,50 +131,7 @@ export default function LatestReportPage() {
                 <div className="bg-white shadow-2xl rounded-sm border border-[#DCE4E1] min-h-[1000px] flex flex-col overflow-hidden">
                     <div className="h-2 w-full bg-[#4A675D]" />
 
-                    {/*  Time stamp*/}
-
-                    {/* Aligned Timestamp Section */}
-                    {/* <div className="px-8 md:px-16 pt-10 flex flex-col md:items-end">
-                        <div className="inline-block text-left md:text-right border-b border-gray-100 pb-2 md:pb-0 md:border-none">
-                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-1">
-                                Date of Issue
-                            </p>
-                            <p className="text-sm font-mono font-bold text-[#4A675D]">
-                                {diagnosisTimestamp || "MAR 30, 2026"}
-                            </p>
-                            <p className="text-[9px] text-gray-400 font-medium italic mt-1 uppercase tracking-tighter">
-                                Digitally Verified Record
-                            </p>
-                        </div>
-                    </div> */}
-
                     <div className="p-8 md:p-16 space-y-12">
-                        {/* HEADER SECTION */}
-                        {/* <section className="border-b border-gray-100 pb-10">
-                            <div className="flex flex-col md:flex-row justify-between gap-8">
-                                <div className="space-y-4 flex-1">
-                                    <div className="flex items-center gap-3">
-                                        <div className="relative flex items-center justify-center">
-                                            <motion.div
-                                                animate={{ scale: [1, 1.5, 1] }}
-                                                transition={{ repeat: Infinity, duration: 2 }}
-                                                className={`absolute w-3 h-3 rounded-full opacity-40 ${getStatusColor(reportData.finalStatus).split(' ')[1]}`}
-                                            />
-                                            <Circle className={`w-3 h-3 fill-current ${getStatusColor(reportData.finalStatus).split(' ')[0]}`} />
-                                        </div>
-                                        <span className="text-[11px] font-black uppercase tracking-tighter">Record Status: {reportData.finalStatus}</span>
-                                    </div>
-                                    <h3 className="text-3xl font-serif leading-tight">{reportData.statusHeadline}</h3>
-                                    <p className="text-[#5C6361] text-sm leading-relaxed max-w-2xl italic">"{reportData.statusSummary}"</p>
-                                </div>
-                                <div className="w-full md:w-48 p-4 bg-gray-50 border border-gray-100 rounded-lg text-center self-start">
-                                    <p className="text-[10px] font-bold text-gray-400 uppercase mb-1">Risk Level</p>
-                                    <p className="text-2xl font-serif text-[#4A675D]">{reportData.escalationLevel}</p>
-                                </div>
-                            </div>
-                        </section>
-                       */}
-
                         {/* HEADER SECTION - Now includes the Timestamp for better balance */}
                         <section className="border-b border-gray-100 pb-10">
                             <div className="flex flex-col md:flex-row justify-between items-start gap-8">
