@@ -1,152 +1,15 @@
 
-// "use client"
-
-// import { motion } from "framer-motion";
-// import { ArrowRight, Sparkles, Activity } from "lucide-react";
-// import Link from "next/link";
-
-// const DashboardHero = () => {
-//   return (
-//     <section className="relative overflow-hidden py-20 md:py-28 bg-[#FAF9F6]">
-
-//       {/* Dynamic Background Accents */}
-//       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#E8F3EE] rounded-full blur-[120px] opacity-50 translate-x-1/2 -translate-y-1/2" />
-//       <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-[#F2F5F3] rounded-full blur-[100px] opacity-60 -translate-x-1/3 translate-y-1/3" />
-
-//       <div className="container mx-auto px-6 relative z-10">
-//         <div className="grid md:grid-cols-2 gap-16 items-center">
-
-//           {/* LEFT SIDE – WELCOME TEXT */}
-//           <motion.div
-//             initial={{ opacity: 0, x: -30 }}
-//             animate={{ opacity: 1, x: 0 }}
-//             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-//           >
-//             {/* First Visit Badge */}
-//             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-[#DCE4E1] mb-8 shadow-sm">
-//               <Sparkles className="w-3.5 h-3.5 text-[#4A675D]" />
-//               <span className="text-[10px] font-bold text-[#4A675D] uppercase tracking-[0.2em]">
-//                 Personalized Onboarding
-//               </span>
-//             </div>
-
-//             {/* Heading */}
-//             <h1 className="font-serif text-4xl md:text-6xl font-medium leading-tight mb-6 text-[#2D3331]">
-//               Welcome. <br />
-//               <span className="italic text-[#4A675D]">Let’s begin your journey.</span>
-//             </h1>
-
-//             {/* Description */}
-//             <p className="text-[#5C6361] text-lg leading-relaxed mb-10 max-w-lg font-light">
-//               This is your first clinical-grade check-in. Our AI will build your initial
-//               baseline to detect risks before they arise. It takes just <span className="font-semibold text-[#4A675D]">3 minutes</span>.
-//             </p>
-
-//             {/* Action Buttons */}
-//             <div className="flex flex-col sm:flex-row gap-5">
-
-//               <Link href="/Checkin">
-
-//                 <motion.button
-//                   whileHover={{ scale: 1.02, backgroundColor: "#3D564D" }}
-//                   whileTap={{ scale: 0.98 }}
-//                   className="bg-[#4A675D] text-white px-8 py-4 rounded-2xl text-base font-bold shadow-[0_15px_30px_-10px_rgba(74,103,93,0.3)] flex items-center justify-center gap-3 group transition-all"
-//                 >
-//                   Start Daily Check-In
-//                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-//                 </motion.button>
-//               </Link>
-
-//               <button className="px-8 py-4 rounded-2xl text-base font-bold text-[#4A675D] border border-[#DCE4E1] bg-white/50 backdrop-blur-sm hover:bg-white transition-all">
-//                 View Methodology
-//               </button>
-//             </div>
-//           </motion.div>
-
-
-//           {/* RIGHT SIDE – SOPHISTICATED AI SPHERE */}
-//           <motion.div
-//             initial={{ opacity: 0, scale: 0.9 }}
-//             animate={{ opacity: 1, scale: 1 }}
-//             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-//             className="relative flex items-center justify-center"
-//           >
-//             <div className="relative w-80 h-80 md:w-[450px] md:h-[450px]">
-
-//               {/* OUTER LAYER - Bio-Teal */}
-//               <motion.div
-//                 animate={{ rotate: 360 }}
-//                 transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-//                 className="absolute inset-0 rounded-[3rem] border border-[#4A675D]/10 bg-[#E8F3EE]/40 backdrop-blur-xl"
-//               />
-
-//               {/* MIDDLE LAYER - Floating Soft Sage */}
-//               <motion.div
-//                 animate={{ y: [0, -20, 0], rotate: -360 }}
-//                 transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-//                 className="absolute inset-16 rounded-[2.5rem] border border-[#DCE4E1] bg-white/40 shadow-inner"
-//               />
-
-//               {/* INNER CORE - The "Health-Core" Green */}
-//               <motion.div
-//                 animate={{ scale: [1, 1.05, 1] }}
-//                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-//                 className="absolute inset-32 rounded-3xl bg-[#4A675D] shadow-2xl flex items-center justify-center text-center p-4"
-//               >
-//                 <div className="text-white">
-//                   <Activity className="w-8 h-8 mb-2 mx-auto opacity-90" />
-//                   <div className="font-serif text-lg font-bold">VitaAI</div>
-//                   <div className="text-[10px] font-bold uppercase tracking-widest opacity-60">
-//                     Listening
-//                   </div>
-//                 </div>
-//               </motion.div>
-
-//               {/* Organic Floating Data Particles */}
-//               {[...Array(4)].map((_, i) => (
-//                 <motion.div
-//                   key={i}
-//                   className="absolute w-2 h-2 rounded-full bg-[#4A675D]/40"
-//                   style={{
-//                     top: `${30 + i * 15}%`,
-//                     left: `${10 + i * 20}%`,
-//                   }}
-//                   animate={{
-//                     y: [0, -30, 0],
-//                     opacity: [0.3, 0.8, 0.3],
-//                     scale: [1, 1.5, 1]
-//                   }}
-//                   transition={{
-//                     duration: 4 + i,
-//                     repeat: Infinity,
-//                     delay: i * 0.5,
-//                   }}
-//                 />
-//               ))}
-
-//             </div>
-//           </motion.div>
-
-//         </div>
-//       </div>
-//     </section>
-//   );
-// };
-
-// export default DashboardHero;
-
-
-"use client"
+"use client";
 
 import { useUser } from "@clerk/nextjs";
 import { motion } from "framer-motion";
-import { ArrowRight, Sparkles, Activity, FileText, PlayCircle, Loader2 } from "lucide-react";
+import { ArrowRight, Sparkles, Activity, FileText, PlayCircle } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const DashboardHero = () => {
   const [hasCompletedFirstDiagnosis, sethasCompletedFirstDiagnosis] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // New Loading State
+  const [isLoading, setIsLoading] = useState(true);
   const { user } = useUser();
   const name = user?.firstName;
 
@@ -156,15 +19,14 @@ const DashboardHero = () => {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
-
       const data = await response.json();
       if (data.Allhistory && data.Allhistory.length > 0) {
         sethasCompletedFirstDiagnosis(true);
       }
     } catch (err) {
-      console.log(err.message);
+      console.error(err.message);
     } finally {
-      setIsLoading(false); // Stop loading regardless of success or error
+      setIsLoading(false);
     }
   };
 
@@ -172,36 +34,56 @@ const DashboardHero = () => {
     gethistory();
   }, []);
 
-  // 1. NEUTRAL LOADING UI 
-  // This avoids the "flicker" by showing a clean transition state
+  // MODERN SHIMMER SKELETON REPLACEMENT
   if (isLoading) {
     return (
-      <section className="relative overflow-hidden py-20 md:py-28 bg-[#FAF9F6] min-h-[500px] flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <Loader2 className="w-10 h-10 text-[#4A675D] animate-spin opacity-20" />
-          <p className="text-[10px] font-bold text-[#4A675D] uppercase tracking-widest opacity-40"> Synchronizing Baseline...</p>
+      <section className="relative overflow-hidden py-12 sm:py-20 md:py-28 bg-[#FAF9F6] min-h-[85vh] flex items-center">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            {/* Text Stack Skeleton */}
+            <div className="space-y-6 animate-pulse">
+              <div className="w-36 h-7 bg-gray-200/80 rounded-full" />
+              <div className="space-y-3">
+                <div className="w-3/4 h-10 sm:h-12 bg-gray-200 rounded-2xl" />
+                <div className="w-1/2 h-10 sm:h-12 bg-gray-200 rounded-2xl" />
+              </div>
+              <div className="space-y-2 pt-2">
+                <div className="w-full h-4 bg-gray-200/70 rounded-md" />
+                <div className="w-5/6 h-4 bg-gray-200/70 rounded-md" />
+              </div>
+              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                <div className="w-full sm:w-44 h-12 bg-gray-200 rounded-2xl" />
+                <div className="w-full sm:w-44 h-12 bg-gray-200 rounded-2xl" />
+              </div>
+            </div>
+            {/* Visual Orb Container Skeleton */}
+            <div className="flex items-center justify-center animate-pulse">
+              <div className="w-64 h-64 sm:w-80 sm:h-80 lg:w-[400px] lg:h-[400px] bg-gray-200/60 rounded-[3rem]" />
+            </div>
+          </div>
         </div>
       </section>
     );
   }
 
-  // 2. ACTUAL UI (Rendered only after API response)
   return (
-    <section className="relative overflow-hidden py-20 md:py-28 bg-[#FAF9F6]">
-      {/* Background Accents */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#E8F3EE] rounded-full blur-[120px] opacity-50 translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-[#F2F5F3] rounded-full blur-[100px] opacity-60 -translate-x-1/3 translate-y-1/3" />
+    <section className="relative overflow-hidden py-12 sm:py-20 md:py-28 bg-[#FAF9F6] min-h-[calc(100vh-80px)] flex items-center">
+      {/* Background Ambience Accents */}
+      <div className="absolute top-0 right-0 w-[280px] h-[280px] sm:w-[500px] sm:h-[500px] bg-[#E8F3EE] rounded-full blur-[80px] sm:blur-[120px] opacity-50 translate-x-1/3 -translate-y-1/3 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[200px] h-[200px] sm:w-[300px] sm:h-[300px] bg-[#F2F5F3] rounded-full blur-[60px] sm:blur-[100px] opacity-60 -translate-x-1/4 translate-y-1/4 pointer-events-none" />
 
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="grid md:grid-cols-2 gap-16 items-center">
-
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          
+          {/* Action Copy Content Side */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="text-center lg:text-left order-1 lg:order-1"
           >
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-[#DCE4E1] mb-8 shadow-sm">
+            {/* Dynamic Status Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-[#DCE4E1] mb-6 sm:mb-8 shadow-sm">
               {!hasCompletedFirstDiagnosis ? (
                 <>
                   <Sparkles className="w-3.5 h-3.5 text-[#4A675D]" />
@@ -215,29 +97,29 @@ const DashboardHero = () => {
               )}
             </div>
 
-            {/* Heading */}
-            <h1 className="font-serif text-4xl md:text-6xl font-medium leading-tight mb-6 text-[#2D3331]">
+            {/* Typography Heading Stack */}
+            <h1 className="font-serif text-3xl sm:text-4xl md:text-6xl font-medium leading-[1.15] mb-4 sm:mb-6 text-[#2D3331]">
               {!hasCompletedFirstDiagnosis ? (
-                <>Welcome. <br /><span className="italic text-[#4A675D]">Let’s begin your journey.</span></>
+                <>Welcome. <br className="hidden sm:inline" /><span className="italic text-[#4A675D]">Let’s begin your journey.</span></>
               ) : (
-                <>Welcome back, <br /><span className="italic text-[#4A675D]">{name}.</span></>
+                <>Welcome back, <br className="hidden sm:inline" /><span className="italic text-[#4A675D]">{name}.</span></>
               )}
             </h1>
 
-            {/* Description */}
-            <p className="text-[#5C6361] text-lg leading-relaxed mb-10 max-w-lg font-light">
+            {/* Description Subtext */}
+            <p className="text-[#5C6361] text-base sm:text-lg leading-relaxed mb-8 sm:mb-10 max-w-md mx-auto lg:mx-0 font-light">
               {!hasCompletedFirstDiagnosis
                 ? "This is your first clinical-grade check-in. Our AI will build your initial baseline to detect health risks before they arise."
-                : "Your baseline is established. You can now perform a new scan to update your vitals or review your latest clinical report below."
-              }
+                : "Your baseline is established. You can now perform a new scan to update your vitals or review your latest clinical report below."}
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-5">
-              <Link href="/Checkin">
+            {/* Dual Action Grid Layout */}
+            <div className="flex flex-col sm:flex-row justify-center lg:justify-flex-start gap-4 max-w-sm mx-auto lg:max-w-none lg:mx-0">
+              <Link href="/Checkin" className="w-full sm:w-auto">
                 <motion.button
                   whileHover={{ scale: 1.02, backgroundColor: "#3D564D" }}
                   whileTap={{ scale: 0.98 }}
-                  className="bg-[#4A675D] text-white px-8 py-4 rounded-2xl text-sm font-bold shadow-lg flex items-center justify-center gap-3 group transition-all w-full sm:w-auto"
+                  className="bg-[#4A675D] text-white px-8 py-4 rounded-2xl text-sm font-bold shadow-lg shadow-[#4A675D]/10 flex items-center justify-center gap-3 group transition-all w-full"
                 >
                   {!hasCompletedFirstDiagnosis ? "Start Daily Check-In" : "New Diagnosis Scan"}
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -245,7 +127,7 @@ const DashboardHero = () => {
               </Link>
 
               {!hasCompletedFirstDiagnosis ? (
-                <button className="px-8 py-4 rounded-2xl text-sm font-bold text-[#4A675D] border border-[#DCE4E1] bg-white/50 backdrop-blur-sm hover:bg-white transition-all flex items-center justify-center gap-2">
+                <button className="px-8 py-4 rounded-2xl text-sm font-bold text-[#4A675D] border border-[#DCE4E1] bg-white/50 backdrop-blur-sm hover:bg-white transition-all flex items-center justify-center gap-2 w-full sm:w-auto">
                   <PlayCircle size={18} /> View Methodology
                 </button>
               ) : (
@@ -258,62 +140,63 @@ const DashboardHero = () => {
             </div>
           </motion.div>
 
-          {/* AI Visual */}
+          {/* AI VitaAI Node Visual Side */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="relative flex items-center justify-center"
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="flex items-center justify-center order-2 lg:order-2 w-full"
           >
-            <div className="relative w-80 h-80 md:w-[450px] md:h-[450px]">
+            {/* Scalable Outer Box Container */}
+            <div className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-[420px] md:h-[420px] aspect-square flex items-center justify-center">
 
-              {/* OUTER LAYER - Bio-Teal */}
+              {/* OUTER CANVAS - Dynamic Rotation Accent */}
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-                className="absolute inset-0 rounded-[3rem] border border-[#4A675D]/10 bg-[#E8F3EE]/40 backdrop-blur-xl"
+                className="absolute inset-0 rounded-[2.5rem] sm:rounded-[3rem] border border-[#4A675D]/10 bg-[#E8F3EE]/40 backdrop-blur-xl"
               />
 
-              {/* MIDDLE LAYER - Floating Soft Sage */}
+              {/* MIDDLE CANVAS - Node Ring */}
               <motion.div
-                animate={{ y: [0, -20, 0], rotate: -360 }}
+                animate={{ y: [0, -12, 0], rotate: -360 }}
                 transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                className="absolute inset-16 rounded-[2.5rem] border border-[#DCE4E1] bg-white/40 shadow-inner"
+                className="absolute inset-10 sm:inset-14 rounded-[2rem] sm:rounded-[2.5rem] border border-[#DCE4E1] bg-white/40 shadow-inner"
               />
 
-              {/* INNER CORE - The "Health-Core" Green */}
+              {/* INNER CORE CONTAINER */}
               <motion.div
-                animate={{ scale: [1, 1.05, 1] }}
+                animate={{ scale: [1, 1.04, 1] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute inset-32 rounded-3xl bg-[#4A675D] shadow-2xl flex items-center justify-center text-center p-4"
+                className="absolute inset-20 sm:inset-28 rounded-2xl sm:rounded-3xl bg-[#4A675D] shadow-xl flex items-center justify-center text-center p-3 sm:p-4 z-10"
               >
                 <div className="text-white">
-                  <Activity className="w-8 h-8 mb-2 mx-auto opacity-90" />
-                  <div className="font-serif text-lg font-bold">VitaAI</div>
-                  <div className="text-[10px] font-bold uppercase tracking-widest opacity-60">
+                  <Activity className="w-6 h-6 sm:w-8 sm:h-8 mb-1 sm:mb-2 mx-auto opacity-90" />
+                  <div className="font-serif text-base sm:text-xl font-bold">VitaAI</div>
+                  <div className="text-[9px] font-bold uppercase tracking-widest opacity-60 mt-0.5">
                     Listening
                   </div>
                 </div>
               </motion.div>
 
-              {/* Organic Floating Data Particles */}
+              {/* Floating Data Micro Particles */}
               {[...Array(4)].map((_, i) => (
                 <motion.div
                   key={i}
-                  className="absolute w-2 h-2 rounded-full bg-[#4A675D]/40"
+                  className="absolute w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#4A675D]/40 z-20"
                   style={{
-                    top: `${30 + i * 15}%`,
-                    left: `${10 + i * 20}%`,
+                    top: `${25 + i * 18}%`,
+                    left: `${15 + i * 22}%`,
                   }}
                   animate={{
-                    y: [0, -30, 0],
+                    y: [0, -20, 0],
                     opacity: [0.3, 0.8, 0.3],
-                    scale: [1, 1.5, 1]
+                    scale: [1, 1.3, 1]
                   }}
                   transition={{
-                    duration: 4 + i,
+                    duration: 3.5 + i,
                     repeat: Infinity,
-                    delay: i * 0.5,
+                    delay: i * 0.4,
                   }}
                 />
               ))}
@@ -321,8 +204,8 @@ const DashboardHero = () => {
             </div>
           </motion.div>
         </div>
-      </div >
-    </section >
+      </div>
+    </section>
   );
 };
 
