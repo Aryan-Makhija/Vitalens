@@ -89,7 +89,7 @@
 //             </div>
 //         </div>
 //     </section>
-   
+
 
 
 // );
@@ -110,15 +110,15 @@ const HeroSection = () => (
             {/* Soft Sage Glows */}
             <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#E8F3EE] rounded-full blur-[120px] opacity-60" />
             <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#F2F5F3] rounded-full blur-[120px] opacity-60" />
-            
+
             {/* Subtle Texture Overlay */}
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-multiply" 
-                 style={{ backgroundImage: `url("https://www.transparenttextures.com/patterns/p6.png")` }} />
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-multiply"
+                style={{ backgroundImage: `url("https://www.transparenttextures.com/patterns/p6.png")` }} />
         </div>
 
         <div className="container mx-auto px-6 relative z-10">
             <div className="max-w-4xl mx-auto text-center">
-                
+
                 {/* AI Badge - High Contrast */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -151,8 +151,8 @@ const HeroSection = () => (
                     transition={{ duration: 0.8, delay: 0.2 }}
                     className="text-lg md:text-xl text-[#5C6361] max-w-2xl mx-auto mb-12 leading-relaxed font-light"
                 >
-                    VitaLens transforms your daily habits into clinical-grade insights. 
-                    Experience early detection and personalized wellness through 
+                    VitaLens transforms your daily habits into clinical-grade insights.
+                    Experience early detection and personalized wellness through
                     advanced <span className="font-semibold text-[#4A675D]">predictive analysis</span>.
                 </motion.p>
 
@@ -164,7 +164,7 @@ const HeroSection = () => (
                     className="flex flex-col sm:flex-row items-center justify-center gap-6"
                 >
                     <Link href="/HomePage">
-                        <motion.button 
+                        <motion.button
                             whileHover={{ scale: 1.05, backgroundColor: "#3D564D" }}
                             whileTap={{ scale: 0.98 }}
                             className="bg-[#4A675D] text-white px-10 py-5 rounded-2xl text-base font-bold shadow-[0_20px_40px_-10px_rgba(74,103,93,0.3)] flex items-center gap-3 group transition-all"
@@ -173,10 +173,13 @@ const HeroSection = () => (
                             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                         </motion.button>
                     </Link>
-                    
-                    <button className="px-10 py-5 rounded-2xl text-base font-bold text-[#4A675D] border border-[#DCE4E1] bg-white/50 backdrop-blur-sm hover:bg-white transition-all">
-                        See How It Works
-                    </button>
+
+                    <a href="#how-it-works">
+
+                        <button className="px-10 py-5 rounded-2xl text-base font-bold text-[#4A675D] border border-[#DCE4E1] bg-white/50 backdrop-blur-sm hover:bg-white transition-all">
+                            See How It Works
+                        </button>
+                    </a>
                 </motion.div>
 
                 {/* Trust Indicators */}

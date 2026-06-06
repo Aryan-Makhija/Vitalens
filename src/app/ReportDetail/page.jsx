@@ -4,12 +4,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
     ShieldCheck, Zap, AlertTriangle,
     Calendar, Brain, ChevronRight, LayoutDashboard, Circle, Home, RefreshCcw, FileText,
-    Clock,
-    X
+    Clock
 } from "lucide-react";
 import Link from "next/link";
 
-export default function LatestReportPage() {
+import { useSearchParams } from "next/navigation";
+
+export default function ReportDetail() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [statusMsg, setStatusMsg] = useState("Accessing Clinical Archives...");
@@ -18,9 +19,11 @@ export default function LatestReportPage() {
     const [postivesignals, setpositivesignals] = useState([]);
     const [suggestions, setsuggestions] = useState([]);
     const [diagnosisTimestamp, setDiagnosisTimestamp] = useState("");
-
-
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const searchParams = useSearchParams();
+    const id = searchParams.get('id');
+
     useEffect(() => {
         // Trigger fetch immediately on page render
         fetchLatestReport();
@@ -40,15 +43,15 @@ export default function LatestReportPage() {
     const fetchLatestReport = async () => {
         try {
             setError(false);
-            setStatusMsg("Retrieving your most recent health synthesis...");
+            setStatusMsg("Retrieving your health synthesis Report...");
 
             // Using GET since we are fetching the latest existing record
-            const res = await fetch("/api/FinalLayer", {
+            const res = await fetch(`/api/FinalLayer/${id}`, {
                 method: "GET",
                 headers: { "Content-Type": "application/json" }
             });
 
-            if (!res.ok) throw new Error("Could not retrieve latest report");
+            if (!res.ok) throw new Error("Could not retrieve report data");
 
             const mainData = await res.json();
             const finalResult = mainData.result;
@@ -71,9 +74,9 @@ export default function LatestReportPage() {
 
             if (finalResult) {
                 const tasks = [];
-                if (finalResult.showConcerns) tasks.push(fetchSubTable("/api/Concerns", "concerns").then(res => setconcern([res])));
-                if (finalResult.showPositives) tasks.push(fetchSubTable("/api/PositiveSignals", "signals").then(res => setpositivesignals([res])));
-                if (finalResult.showSuggestions) tasks.push(fetchSubTable("/api/Suggestions", "suggestions").then(res => setsuggestions([res])));
+                if (finalResult.showConcerns) tasks.push(fetchSubTable(`/api/Concerns/${finalResult.layer2ReportId}`, "concerns").then(res => setconcern([res])));
+                if (finalResult.showPositives) tasks.push(fetchSubTable(`/api/PositiveSignals/${finalResult.layer2ReportId}`, "signals").then(res => setpositivesignals([res])));
+                if (finalResult.showSuggestions) tasks.push(fetchSubTable(`/api/Suggestions/${finalResult.layer2ReportId}`, "suggestions").then(res => setsuggestions([res])));
                 await Promise.all(tasks);
             }
 
@@ -125,10 +128,10 @@ export default function LatestReportPage() {
                 <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
                     <div>
                         <h1 className="text-sm font-bold uppercase tracking-[0.4em] text-[#8B7E66] mb-2">Historical Records</h1>
-                        <h2 className="text-4xl font-serif text-[#1A1F1E]">Latest Clinical Synthesis</h2>
+                        <h2 className="text-4xl font-serif text-[#1A1F1E]">Your Clinical Synthesis</h2>
                     </div>
-                    <Link href="/HomePage" className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#4A675D] hover:text-[#2D3331] transition-colors pb-1 border-b border-transparent hover:border-[#2D3331]">
-                        <Home size={14} /> Back to Dashboard
+                    <Link href="/DiagnosisHistory" className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#4A675D] hover:text-[#2D3331] transition-colors pb-1 border-b border-transparent hover:border-[#2D3331]">
+                        <Home size={14} /> Back to Diagnosis History
                     </Link>
                 </div>
 
@@ -235,29 +238,7 @@ export default function LatestReportPage() {
                         )}
 
                         {/* PROTOCOLS */}
-                        {/* {reportData.showSuggestions && suggestions.length > 0 && (
-                            <section>
-                                <div className="flex items-center gap-2 mb-6 border-l-4 border-[#4A675D] pl-4">
-                                    <h4 className="text-lg font-bold uppercase tracking-widest text-gray-800">Active Suggestions</h4>
-                                </div>
-                                <div className="space-y-6">
-                                    {suggestions.map((item, i) => (
-                                        <div key={i} className="flex gap-6 p-6 hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-100 rounded-lg">
-                                            <div className="shrink-0 w-10 h-10 rounded-full bg-[#F3F4F1] flex items-center justify-center text-sm font-bold text-[#4A675D] border border-[#DCE4E1]">
-                                                {i + 1}
-                                            </div>
-                                            <div className="flex-1">
-                                                <p className="text-lg font-bold text-gray-900 mb-2">{item.suggestion}</p>
-                                                <div className="mb-4">
-                                                    <span className="text-[10px] font-bold text-[#8B7E66] uppercase block mb-1">Clinical Rationale</span>
-                                                    <p className="text-sm text-gray-600 italic leading-relaxed">"{item.reason}"</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </section>
-                        )} */}
+
                         {reportData.showSuggestions && suggestions.length > 0 && (
                             <section>
                                 <div className="flex items-center gap-2 mb-6 border-l-4 border-[#4A675D] pl-4">
@@ -342,24 +323,21 @@ export default function LatestReportPage() {
                     </div>
                 </div>
             </div>
-
-
-
             {/* ENROLLMENT MODAL COMPONENT */}
             <AnimatePresence>
                 {isModalOpen && (
                     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
                         {/* Backdrop */}
-                        <motion.div 
+                        <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={() => setIsModalOpen(false)}
                             className="absolute inset-0 bg-black/60 backdrop-blur-sm"
                         />
-                        
+
                         {/* Modal Content */}
-                        <motion.div 
+                        <motion.div
                             initial={{ scale: 0.9, opacity: 0, y: 20 }}
                             animate={{ scale: 1, opacity: 1, y: 0 }}
                             exit={{ scale: 0.9, opacity: 0, y: 20 }}
@@ -370,7 +348,7 @@ export default function LatestReportPage() {
                                     <div className="w-12 h-12 bg-[#F3F4F1] rounded-full flex items-center justify-center text-[#4A675D]">
                                         <Calendar size={24} />
                                     </div>
-                                    <button 
+                                    <button
                                         onClick={() => setIsModalOpen(false)}
                                         className="text-gray-400 hover:text-gray-600 transition-colors"
                                     >
@@ -386,13 +364,13 @@ export default function LatestReportPage() {
                                 </div>
 
                                 <div className="flex flex-col gap-3">
-                                    <Link 
-                                        href="/Dashboard" 
+                                    <Link
+                                        href="/Dashboard"
                                         className="flex items-center justify-center gap-2 bg-[#4A675D] text-white py-4 rounded-xl font-bold hover:bg-[#3d554c] transition-all shadow-lg shadow-[#4A675D]/20"
                                     >
                                         <LayoutDashboard size={18} /> Go to Dashboard
                                     </Link>
-                                    <button 
+                                    <button
                                         onClick={() => setIsModalOpen(false)}
                                         className="text-gray-500 font-bold py-2 text-sm hover:text-gray-800"
                                     >
@@ -404,7 +382,12 @@ export default function LatestReportPage() {
                     </div>
                 )}
             </AnimatePresence>
+
         </div>
+
+
+
+
     );
 }
 
@@ -424,7 +407,7 @@ const LoadingOverlay = ({ message }) => (
                 />
                 <FileText size={64} className="text-[#4A675D] animate-pulse" />
             </div>
-            <h2 className="font-serif text-2xl text-[#2D3331] mb-3 font-medium tracking-tight">Fetching Latest Report</h2>
+            <h2 className="font-serif text-2xl text-[#2D3331] mb-3 font-medium tracking-tight">Fetching Your Report</h2>
             <p className="text-[#8B7E66] text-[11px] font-bold uppercase tracking-[0.3em] opacity-80">{message}</p>
         </div>
     </div>

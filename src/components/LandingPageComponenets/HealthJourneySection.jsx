@@ -680,7 +680,7 @@ const JourneyStep = ({ step, index, isLast }) => {
 
 export default function HealthJourneySection() {
   return (
-    <section className="bg-[#FCFAF7] py-24 relative overflow-hidden">
+    <section id="healthJourney" className="bg-[#FCFAF7] py-24 relative overflow-hidden">
       {/* Soft Ambient Background Decor */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-50">
         <div className="absolute top-[-10%] left-[-5%] w-[40%] h-[40%] bg-[#E8F1EE] rounded-full blur-[120px]" />

@@ -1,8 +1,10 @@
 
 import db from "@/lib/config/db";
 import { form1Table, layer1ResultsTable } from "@/lib/config/schema";
+import { auth } from "@clerk/nextjs/server";
 import { GoogleGenAI } from "@google/genai";
 import { eq } from "drizzle-orm"
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY
@@ -78,7 +80,26 @@ RETURN JSON ONLY USING THIS SCHEMA:
 `;
 
 export async function POST(req) {
-  const { form1Id } = await req.json();
+
+
+  //Auhthentication
+
+  // const { userId } = await auth();
+  // if (!userId) {
+  //   return NextResponse.json({ error: "Unauhorized" }, { status: 401 });
+  // }
+
+
+  const cookieStore = await cookies()
+  const form1Id = cookieStore.get("form1Id")?.value;
+
+  if (!form1Id) {
+    return NextResponse.json({ error: "No Form1 Id Found" }, { status: 400 });
+  }
+
+
+
+  // const { form1id} = await req.json();
 
   // 1️⃣ Fetch Form 1
   const form1 = await db
@@ -93,7 +114,7 @@ export async function POST(req) {
 
   // 2️⃣ Gemini call
   const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash",
+    model: "gemini-3-flash-preview",
     config: { responseMimeType: "text/plain" },
     contents: [
       {
@@ -146,6 +167,19 @@ export async function POST(req) {
           modules: saved.requiredContextModules
         };
 
+
+  cookieStore.set("layer1ResultId", saved.id, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'strict',
+    path: '/',
+    maxAge: 60 * 30,
+
+  })
+
+
+
+
   return Response.json({
     userResponse,
     systemResponse: {
@@ -156,3 +190,4 @@ export async function POST(req) {
     }
   });
 }
+

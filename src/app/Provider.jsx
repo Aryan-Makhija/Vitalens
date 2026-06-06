@@ -4,7 +4,7 @@
 import { Layer1Response } from '@/Context/Layer1Response'
 import { UserDetails } from '@/Context/userdetails'
 import { useUser } from '@clerk/nextjs'
-import axios from 'axios'
+
 import React, { useEffect, useState } from 'react'
 
 const Provider = ({ children }) => {
@@ -20,9 +20,15 @@ const Provider = ({ children }) => {
 
         try {
 
-            const response = await axios.post("/api/user", {
-                name: user?.fullName,
-                email: user?.primaryEmailAddress?.emailAddress
+            const response = await fetch("/api/user", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    name: user?.fullName,
+                    email: user?.primaryEmailAddress?.emailAddress
+
+                })
+
             })
 
             // console.log(response.data)

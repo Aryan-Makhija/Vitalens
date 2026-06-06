@@ -1,58 +1,608 @@
+// "use client";
+
+// import { Layer1Response } from "@/Context/Layer1Response";
+// import { useContext, useState } from "react";
+// import { motion, AnimatePresence } from "framer-motion";
+// import {
+//     ShieldAlert, Activity, Brain, ClipboardList,
+//     ChevronRight, CheckCircle2, AlertCircle, Loader2, BrainCircuit,
+//     AlertTriangle,
+//     Home
+// } from "lucide-react";
+// import Link from "next/link";
+// import { useRouter } from "next/navigation";
+
+// export default function Phase2() {
+
+
+//     const { layer1data } = useContext(Layer1Response);
+
+
+//     const [error, setError] = useState(null);
+//     const [isSubmitting, setIsSubmitting] = useState(false);
+//     const [aiAnalyzing, setAiAnalyzing] = useState(false);
+//     const [submitted, setSubmitted] = useState(false);
+//     const [analysisComplete, setAnalysisComplete] = useState(false);
+
+//     const router = useRouter()
+//     const requiredContextModules = layer1data?.requiredContextModules || {};
+
+//     const [formState, setFormState] = useState({
+//         generalHealthSafety: {
+//             ongoingCondition: "",
+//             details: [],
+//             conditionOtherText: ""
+//         },
+//         painPhysicalLimitation: {
+//             painLevel: "",
+//             painLocation: [],
+//             painAffectsMovement: null
+//         },
+//         stressMentalLoad: {
+//             stressType: "",
+//             duration: ""
+//         },
+//         medicalLifestyle: {
+//             recoveringIllness: false,
+//             medicationAffectingSleep: false,
+//             chronicCondition: false,
+//             preferNotToSayMedical: false
+//         },
+//     });
+
+//     if (!layer1data) {
+//         return (
+//             <div className="min-h-screen flex items-center justify-center bg-[#FAF9F6]">
+//                 <Loader2 className="animate-spin text-[#4A675D]" size={40} />
+//             </div>
+//         );
+//     }
+
+//     const handleChange = (module, field, value) => {
+//         setFormState(prev => ({
+//             ...prev,
+//             [module]: { ...prev[module], [field]: value }
+//         }));
+//     };
+
+//     const handleCheckboxChange = (module, field, value) => {
+//         const prevArray = formState[module][field] || [];
+//         const updatedArray = prevArray.includes(value)
+//             ? prevArray.filter(v => v !== value)
+//             : [...prevArray, value];
+//         handleChange(module, field, updatedArray);
+//     };
+
+//     const validateForm2 = () => {
+//         if (requiredContextModules.GENERAL_HEALTH_SAFETY) {
+//             const m1 = formState.generalHealthSafety;
+//             if (!m1.ongoingCondition) return { isValid: false, message: "Please specify if you have an ongoing condition." };
+//             if (m1.ongoingCondition === "Yes" && m1.details.length === 0) return { isValid: false, message: "Please select your condition types." };
+//             if (m1.ongoingCondition === "Yes" && m1.details.includes("Other") && !m1.conditionOtherText?.trim()) return { isValid: false, message: "Please describe your condition." };
+//         }
+//         if (requiredContextModules.PAIN_PHYSICAL_LIMITATION) {
+//             const m2 = formState.painPhysicalLimitation;
+//             if (!m2.painLevel) return { isValid: false, message: "Please select a pain level." };
+//             if (m2.painLevel !== "No" && m2.painLocation.length === 0) return { isValid: false, message: "Please specify pain locations." };
+//             if (m2.painLevel !== "No" && m2.painAffectsMovement === null) return { isValid: false, message: "Please indicate if pain limits movement." };
+//         }
+//         if (requiredContextModules.STRESS_MENTAL_LOAD) {
+//             const m3 = formState.stressMentalLoad;
+//             if (!m3.stressType || !m3.duration) return { isValid: false, message: "Please complete the Stress & Mental Load section." };
+//         }
+//         if (requiredContextModules.MEDICAL_LIFESTYLE) {
+//             const m4 = formState.medicalLifestyle;
+//             if (m4.preferNotToSayMedical === false && (m4.recoveringIllness === undefined)) return { isValid: false, message: "Please complete medical context." };
+//         }
+//         return { isValid: true, message: null };
+//     };
+
+//     const form2data = async (e) => {
+//         e.preventDefault();
+//         setError(null);
+//         const validation = validateForm2();
+
+//         if (!validation.isValid) {
+//             setError(validation.message);
+//             window.scrollTo({ top: 0, behavior: 'smooth' });
+//             return;
+//         }
+
+//         setIsSubmitting(true);
+//         const payload = {
+//             hasOngoingCondition: formState.generalHealthSafety.ongoingCondition === "Yes",
+//             conditionTypes: formState.generalHealthSafety.ongoingCondition === "Yes" ? formState.generalHealthSafety.details : null,
+//             conditionOtherText: formState.generalHealthSafety.details?.includes("Other") ? formState.generalHealthSafety.conditionOtherText : null,
+//             painSeverity: formState.painPhysicalLimitation.painLevel || null,
+//             painLocations: formState.painPhysicalLimitation.painLevel !== "No" ? formState.painPhysicalLimitation.painLocation : null,
+//             painAffectsMovement: formState.painPhysicalLimitation.painLevel !== "No" ? formState.painPhysicalLimitation.painAffectsMovement : null,
+//             stressType: formState.stressMentalLoad.stressType || null,
+//             stressDuration: formState.stressMentalLoad.duration || null,
+//             recoveringFromIllness: formState.medicalLifestyle.preferNotToSayMedical ? null : formState.medicalLifestyle.recoveringIllness,
+//             onMedicationAffectingEnergy: formState.medicalLifestyle.preferNotToSayMedical ? null : formState.medicalLifestyle.medicationAffectingSleep,
+//             managingLongTermCondition: formState.medicalLifestyle.preferNotToSayMedical ? null : formState.medicalLifestyle.chronicCondition,
+//             preferNotToSayMedical: formState.medicalLifestyle.preferNotToSayMedical
+//         };
+
+//         try {
+//             const response = await fetch("/api/Form2", {
+//                 method: "POST",
+//                 headers: { "Content-Type": "application/json" },
+//                 body: JSON.stringify(payload),
+//             });
+//             if (response.ok) {
+//                 // const data = await response.json();
+//                 // const newForm2Id = data.form2Id; 
+//                 // Capture ID immediately
+//                 // setform2Id(newForm2Id);
+
+//                 setAiAnalyzing(true);
+//                 await Ailayer2(); // Pass directly to avoid state lag
+//             } else {
+//                 setError("Submission failed. Please try again.");
+//                 setIsSubmitting(false); // Reset if failed
+//             }
+//         } catch (err) {
+//             setError("A server error occurred.");
+//         } finally {
+//             setIsSubmitting(false);
+//         }
+//     };
+
+
+
+//     /* Ai Layer2 is called */
+
+//     const Ailayer2 = async () => {
+//         try {
+//             await fetch("/api/Layer2", {
+//                 method: "POST",
+//                 credentials: "include",
+//                 headers: {
+//                     "Content-Type": "application/json",
+//                 },
+//                 // body: JSON.stringify({
+
+//                 //     form1Id: form1Id,
+//                 //     form2Id: currentForm2Id,
+//                 //     layer1ResultId: layer1data.layer1ResultId,
+//                 // }),
+//             })
+
+//             // const data = await res.json()
+//             // setlayer2Id(data.reportId)
+
+//             // setid(data.reportId)
+
+//             setAnalysisComplete(true);
+//             setTimeout(() => {
+//                 setAiAnalyzing(false);
+//                 setSubmitted(true);
+//             }, 2000);
+
+
+//             // console.log("AI Layer2  RESPONSE", data)
+
+//         } catch (err) {
+//             console.error("Layer 2 Error:", err.message);
+//             setAiAnalyzing(false);
+//             setError("AI Analysis failed.");
+//         } finally {
+//             setIsSubmitting(false);
+//         }
+//     }
+
+
+//     const backtohome = async () => {
+
+//         try {
+//             await fetch("/api/DeleteIds", {
+//                 methods: "GET",
+//                 credentials: "include",
+//                 headers: { "Content-Type": "application/json" }
+//             })
+
+//             router.push("/HomePage")
+//         } catch (err) {
+//             console.log(err.message)
+//             // return NextResponse.json({ error: err.message }, { status: 401 })
+//         }
+
+//     }
+
+//     //Error Occured
+//     if (error) return (
+//         <div className="min-h-screen bg-[#F3F4F1] flex items-center justify-center p-6 text-center">
+//             <motion.div
+//                 initial={{ opacity: 0, scale: 0.95 }}
+//                 animate={{ opacity: 1, scale: 1 }}
+//                 className="max-w-md bg-white p-10 rounded-3xl shadow-2xl border border-red-50"
+//             >
+//                 <div className="w-20 h-20 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-6">
+//                     <AlertTriangle size={40} />
+//                 </div>
+
+//                 <h2 className="text-2xl font-serif text-[#1A1F1E] mb-4">
+//                     Analysis Encountered an Issue
+//                 </h2>
+
+//                 <p className="text-sm text-gray-500 leading-relaxed mb-8">
+//                     We've encountered a temporary server issue while analysing your data.
+//                     Please return to the home page to retry your health check-in.
+//                 </p>
+
+//                 <button
+//                     onClick={backtohome}
+//                     className="w-full flex items-center justify-center gap-2 bg-[#4A675D] text-white py-4 px-6 rounded-xl font-bold hover:bg-[#3d554c] transition-all shadow-lg active:scale-95"
+//                 >
+//                     <Home size={18} />
+//                     Return to Home Page
+//                 </button>
+//             </motion.div>
+//         </div>
+//     );
+
+
+//     //Ai Loading Overlay
+//     if (aiAnalyzing) {
+//         return (
+//             <div className="min-h-screen bg-[#FAF9F6] flex items-center justify-center p-6">
+//                 <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="bg-white p-12 rounded-[3rem] border border-[#DCE4E1] shadow-xl text-center max-w-sm w-full">
+//                     <div className="flex justify-center mb-6">
+//                         {analysisComplete ? (
+//                             <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center text-green-600">
+//                                 <CheckCircle2 size={48} className="animate-bounce" />
+//                             </div>
+//                         ) : (
+//                             <div className="relative">
+//                                 <BrainCircuit size={64} className="text-[#4A675D] animate-pulse" />
+//                                 <motion.div animate={{ rotate: 360 }} transition={{ duration: 4, repeat: Infinity, ease: "linear" }} className="absolute -inset-4 border-2 border-dashed border-[#4A675D]/30 rounded-full" />
+//                             </div>
+//                         )}
+//                     </div>
+//                     <h2 className="font-serif text-2xl text-[#2D3331] mb-2">
+//                         {analysisComplete ? "Analysis Successful" : "AI Neural Processing"}
+//                     </h2>
+//                     <p className="text-[#8B7E66] text-sm italic">
+//                         {analysisComplete ? "Layer 2 analysis completed successfully." : "Synthesizing your biometric markers for Layer 2 detection..."}
+//                     </p>
+//                 </motion.div>
+//             </div>
+//         );
+//     }
+
+//     if (submitted) return <SuccessMessage ></SuccessMessage>
+
+
+
+
+// "use client";
+
+// import { Layer1Response } from "@/Context/Layer1Response";
+// import { useContext, useState, useEffect } from "react";
+// import { motion, AnimatePresence } from "framer-motion";
+// import {
+//     ShieldAlert, Activity, Brain, ClipboardList,
+//     ChevronRight, CheckCircle2, AlertCircle, Loader2, BrainCircuit,
+//     AlertTriangle, RefreshCw,
+//     Home
+// } from "lucide-react";
+// import Link from "next/link";
+// import { useRouter } from "next/navigation";
+
+// export default function Phase2() {
+//     const { layer1data } = useContext(Layer1Response);
+
+//     const [error, setError] = useState(null);
+//     const [isSubmitting, setIsSubmitting] = useState(false);
+//     const [aiAnalyzing, setAiAnalyzing] = useState(false);
+//     const [submitted, setSubmitted] = useState(false);
+//     const [analysisComplete, setAnalysisComplete] = useState(false);
+
+//     const router = useRouter();
+//     const requiredContextModules = layer1data?.requiredContextModules || {};
+
+//     // Requirement 2: Prevent Hard Reload during active analysis
+//     useEffect(() => {
+//         const handleBeforeUnload = (e) => {
+//             if (aiAnalyzing) {
+//                 e.preventDefault();
+//                 e.returnValue = "Analysis is in progress. Please wait for completion to avoid data loss.";
+//             }
+//         };
+
+//         window.addEventListener("beforeunload", handleBeforeUnload);
+//         return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+//     }, [aiAnalyzing]);
+
+//     // Initialize LocalStorage state
+//     useEffect(() => {
+//         if (typeof window !== "undefined") {
+//             const status = localStorage.getItem("phase2_completed");
+//             if (!status) {
+//                 localStorage.setItem("phase2_completed", "false");
+//             }
+//         }
+//     }, []);
+
+//     const [formState, setFormState] = useState({
+//         generalHealthSafety: { ongoingCondition: "", details: [], conditionOtherText: "" },
+//         painPhysicalLimitation: { painLevel: "", painLocation: [], painAffectsMovement: null },
+//         stressMentalLoad: { stressType: "", duration: "" },
+//         medicalLifestyle: { recoveringIllness: false, medicationAffectingSleep: false, chronicCondition: false, preferNotToSayMedical: false },
+//     });
+
+//     if (!layer1data) {
+//         return (
+//             <div className="min-h-screen flex items-center justify-center bg-[#FAF9F6]">
+//                 <Loader2 className="animate-spin text-[#4A675D]" size={40} />
+//             </div>
+//         );
+//     }
+
+
+
+//     const handleChange = (module, field, value) => {
+//         setFormState(prev => ({
+//             ...prev,
+//             [module]: { ...prev[module], [field]: value }
+//         }));
+//     };
+
+
+//     const handleCheckboxChange = (module, field, value) => {
+//         const prevArray = formState[module][field] || [];
+//         const updatedArray = prevArray.includes(value)
+//             ? prevArray.filter(v => v !== value)
+//             : [...prevArray, value];
+//         handleChange(module, field, updatedArray);
+//     };
+
+//     const validateForm2 = () => {
+//         if (requiredContextModules.GENERAL_HEALTH_SAFETY) {
+//             const m1 = formState.generalHealthSafety;
+//             if (!m1.ongoingCondition) return { isValid: false, message: "Please specify if you have an ongoing condition." };
+//             if (m1.ongoingCondition === "Yes" && m1.details.length === 0) return { isValid: false, message: "Please select your condition types." };
+//             if (m1.ongoingCondition === "Yes" && m1.details.includes("Other") && !m1.conditionOtherText?.trim()) return { isValid: false, message: "Please describe your condition." };
+//         }
+//         if (requiredContextModules.PAIN_PHYSICAL_LIMITATION) {
+//             const m2 = formState.painPhysicalLimitation;
+//             if (!m2.painLevel) return { isValid: false, message: "Please select a pain level." };
+//             if (m2.painLevel !== "No" && m2.painLocation.length === 0) return { isValid: false, message: "Please specify pain locations." };
+//             if (m2.painLevel !== "No" && m2.painAffectsMovement === null) return { isValid: false, message: "Please indicate if pain limits movement." };
+//         }
+//         if (requiredContextModules.STRESS_MENTAL_LOAD) {
+//             const m3 = formState.stressMentalLoad;
+//             if (!m3.stressType || !m3.duration) return { isValid: false, message: "Please complete the Stress & Mental Load section." };
+//         }
+//         if (requiredContextModules.MEDICAL_LIFESTYLE) {
+//             const m4 = formState.medicalLifestyle;
+//             if (m4.preferNotToSayMedical === false && (m4.recoveringIllness === undefined)) return { isValid: false, message: "Please complete medical context." };
+//         }
+//         return { isValid: true, message: null };
+//     };
+
+//     const form2data = async (e) => {
+//         e.preventDefault();
+//         setError(null);
+
+//         // Requirement 1: Check LocalStorage before API call
+//         const isCompleted = localStorage.getItem("phase2_completed") === "true";
+//         if (isCompleted) {
+//             setError("Analysis already completed. Please check your results or restart.");
+//             return;
+//         }
+
+//         const validation = validateForm2();
+//         if (!validation.isValid) {
+//             setError(validation.message);
+//             window.scrollTo({ top: 0, behavior: 'smooth' });
+//             return;
+//         }
+
+//         setIsSubmitting(true);
+//         const payload = {
+//             hasOngoingCondition: formState.generalHealthSafety.ongoingCondition === "Yes",
+//             conditionTypes: formState.generalHealthSafety.ongoingCondition === "Yes" ? formState.generalHealthSafety.details : null,
+//             conditionOtherText: formState.generalHealthSafety.details?.includes("Other") ? formState.generalHealthSafety.conditionOtherText : null,
+//             painSeverity: formState.painPhysicalLimitation.painLevel || null,
+//             painLocations: formState.painPhysicalLimitation.painLevel !== "No" ? formState.painPhysicalLimitation.painLocation : null,
+//             painAffectsMovement: formState.painPhysicalLimitation.painLevel !== "No" ? formState.painPhysicalLimitation.painAffectsMovement : null,
+//             stressType: formState.stressMentalLoad.stressType || null,
+//             stressDuration: formState.stressMentalLoad.duration || null,
+//             recoveringFromIllness: formState.medicalLifestyle.preferNotToSayMedical ? null : formState.medicalLifestyle.recoveringIllness,
+//             onMedicationAffectingEnergy: formState.medicalLifestyle.preferNotToSayMedical ? null : formState.medicalLifestyle.medicationAffectingSleep,
+//             managingLongTermCondition: formState.medicalLifestyle.preferNotToSayMedical ? null : formState.medicalLifestyle.chronicCondition,
+//             preferNotToSayMedical: formState.medicalLifestyle.preferNotToSayMedical
+//         };
+
+
+//         try {
+//             const response = await fetch("/api/Form2", {
+//                 method: "POST",
+//                 headers: { "Content-Type": "application/json" },
+//                 body: JSON.stringify(payload),
+//             });
+
+//             // Requirement 3: Check for 200 Status
+//             if (response.status === 200) {
+//                 setAiAnalyzing(true);
+//                 await Ailayer2();
+//             } else {
+//                 setError("Phase analysis problem. Status: " + response.status);
+//             }
+//         } catch (err) {
+//             setError("A server connection error occurred.");
+//         } finally {
+//             setIsSubmitting(false);
+//         }
+//     };
+
+//     const Ailayer2 = async () => {
+//         try {
+//             const res = await fetch("/api/Layer2", {
+//                 method: "POST",
+//                 credentials: "include",
+//                 headers: { "Content-Type": "application/json" },
+//             });
+
+//             // Requirement 3: Check for 200 Status on AI Layer
+//             if (res.status !== 200) {
+//                 throw new Error("AI Processing failed");
+//             }
+
+//             // Success: Update LocalStorage
+//             localStorage.setItem("phase2_completed", "true");
+//             setAnalysisComplete(true);
+//             setTimeout(() => {
+//                 setAiAnalyzing(false);
+//                 setSubmitted(true);
+//             }, 2000);
+
+//         } catch (err) {
+//             setError("There is a problem in the phase analysis. Please reload or restart.");
+//             setAiAnalyzing(false);
+//         }
+//     };
+
+//     const backtohome = async () => {
+//         try {
+//             localStorage.setItem("phase2_completed", "false"); // Reset on restart
+//             await fetch("/api/DeleteIds", {
+//                 method: "GET",
+//                 credentials: "include",
+//                 headers: { "Content-Type": "application/json" },
+//             });
+//             localStorage.removeItem("phase2_completed")
+//             router.push("/HomePage");
+//         } catch (err) {
+//             console.error(err.message);
+//         }
+//     };
+
+//     // Requirement 3: UI Error Block with Reload & Home options
+//     if (error) return (
+//         <div className="min-h-screen bg-[#F3F4F1] flex items-center justify-center p-6 text-center">
+//             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="max-w-md bg-white p-10 rounded-3xl shadow-2xl border border-red-50">
+//                 <div className="w-20 h-20 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-6">
+//                     <AlertTriangle size={40} />
+//                 </div>
+//                 <h2 className="text-2xl font-serif text-[#1A1F1E] mb-4">Phase Analysis Issue</h2>
+//                 <p className="text-sm text-gray-500 leading-relaxed mb-8">{error}</p>
+//                 <div className="flex flex-col gap-3">
+//                     <button
+//                         onClick={() => window.location.reload()}
+//                         className="w-full flex items-center justify-center gap-2 bg-[#4A675D] text-white py-4 px-6 rounded-xl font-bold hover:bg-[#3d554c] transition-all"
+//                     >
+//                         <RefreshCw size={18} /> Reload Analysis
+//                     </button>
+//                     <button
+//                         onClick={backtohome}
+//                         className="w-full flex items-center justify-center gap-2 border border-gray-200 text-gray-600 py-4 px-6 rounded-xl font-bold hover:bg-gray-50 transition-all"
+//                     >
+//                         <Home size={18} /> Return to Home
+//                     </button>
+//                 </div>
+//             </motion.div>
+//         </div>
+//     );
+
+
+//     //     //Ai Loading Overlay
+//     if (aiAnalyzing) {
+//         return (
+//             <div className="min-h-screen bg-[#FAF9F6] flex items-center justify-center p-6">
+//                 <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="bg-white p-12 rounded-[3rem] border border-[#DCE4E1] shadow-xl text-center max-w-sm w-full">
+//                     <div className="flex justify-center mb-6">
+//                         {analysisComplete ? (
+//                             <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center text-green-600">
+//                                 <CheckCircle2 size={48} className="animate-bounce" />
+//                             </div>
+//                         ) : (
+//                             <div className="relative">
+//                                 <BrainCircuit size={64} className="text-[#4A675D] animate-pulse" />
+//                                 <motion.div animate={{ rotate: 360 }} transition={{ duration: 4, repeat: Infinity, ease: "linear" }} className="absolute -inset-4 border-2 border-dashed border-[#4A675D]/30 rounded-full" />
+//                             </div>
+//                         )}
+//                     </div>
+//                     <h2 className="font-serif text-2xl text-[#2D3331] mb-2">
+//                         {analysisComplete ? "Analysis Successful" : "AI Neural Processing"}
+//                     </h2>
+//                     <p className="text-[#8B7E66] text-sm italic">
+//                         {analysisComplete ? "Layer 2 analysis completed successfully." : "Synthesizing your biometric markers for Layer 2 detection..."}
+//                     </p>
+//                 </motion.div>
+//             </div>
+//         );
+//     }
+
+//     if (submitted) return <SuccessMessage ></SuccessMessage>
+
+
 "use client";
 
 import { Layer1Response } from "@/Context/Layer1Response";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
     ShieldAlert, Activity, Brain, ClipboardList,
-    ChevronRight, CheckCircle2, AlertCircle, Loader2, BrainCircuit
+    ChevronRight, CheckCircle2, AlertCircle, Loader2, BrainCircuit,
+    AlertTriangle, RefreshCw, Home
 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Phase2() {
-    const { layer1data, form2Id, form1Id, setform2Id, setlayer2Id, layer2Id } = useContext(Layer1Response);
+    const { layer1data } = useContext(Layer1Response);
+    const router = useRouter();
 
-
+    // 1. Core State Handling
+    const [pageStatus, setPageStatus] = useState("loading"); // loading, idle, analyzing, completed, error
     const [error, setError] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [aiAnalyzing, setAiAnalyzing] = useState(false);
-    const [submitted, setSubmitted] = useState(false);
     const [analysisComplete, setAnalysisComplete] = useState(false);
 
-    // const [id, setid] = useState()
+    // 2. Hydration & Persistence Logic
+    useEffect(() => {
+        const storedStatus = localStorage.getItem("phase2_completed");
 
-    const requiredContextModules = layer1data?.requiredContextModules || {};
+        if (storedStatus === "true") {
+            setPageStatus("completed");
+        } else if (storedStatus === "analyzing") {
+            // User reloaded while AI was working
+            setPageStatus("analyzing");
+            Ailayer2(); // Resume analysis
+        } else {
+            // If no layer1data and not completed, it's an invalid access/reload
+            if (!layer1data) {
+                setPageStatus("error");
+                setError("Context lost due to page reload. Please restart the analysis from the beginning.");
+            } else {
+                setPageStatus("idle");
+            }
+        }
+    }, [layer1data]);
+
+    // 3. Prevent Hard Reload during active analysis
+    useEffect(() => {
+        const handleBeforeUnload = (e) => {
+            if (pageStatus === "analyzing") {
+                e.preventDefault();
+                e.returnValue = "Analysis is in progress. Please wait...";
+            }
+        };
+        window.addEventListener("beforeunload", handleBeforeUnload);
+        return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+    }, [pageStatus]);
 
     const [formState, setFormState] = useState({
-        generalHealthSafety: {
-            ongoingCondition: "",
-            details: [],
-            conditionOtherText: ""
-        },
-        painPhysicalLimitation: {
-            painLevel: "",
-            painLocation: [],
-            painAffectsMovement: null
-        },
-        stressMentalLoad: {
-            stressType: "",
-            duration: ""
-        },
-        medicalLifestyle: {
-            recoveringIllness: false,
-            medicationAffectingSleep: false,
-            chronicCondition: false,
-            preferNotToSayMedical: false
-        },
+        generalHealthSafety: { ongoingCondition: "", details: [], conditionOtherText: "" },
+        painPhysicalLimitation: { painLevel: "", painLocation: [], painAffectsMovement: null },
+        stressMentalLoad: { stressType: "", duration: "" },
+        medicalLifestyle: { recoveringIllness: false, medicationAffectingSleep: false, chronicCondition: false, preferNotToSayMedical: false },
     });
 
-    if (!layer1data) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-[#FAF9F6]">
-                <Loader2 className="animate-spin text-[#4A675D]" size={40} />
-            </div>
-        );
-    }
+    const requiredContextModules = layer1data?.requiredContextModules || {};
 
     const handleChange = (module, field, value) => {
         setFormState(prev => ({
@@ -70,6 +620,7 @@ export default function Phase2() {
     };
 
     const validateForm2 = () => {
+
         if (requiredContextModules.GENERAL_HEALTH_SAFETY) {
             const m1 = formState.generalHealthSafety;
             if (!m1.ongoingCondition) return { isValid: false, message: "Please specify if you have an ongoing condition." };
@@ -91,22 +642,21 @@ export default function Phase2() {
             if (m4.preferNotToSayMedical === false && (m4.recoveringIllness === undefined)) return { isValid: false, message: "Please complete medical context." };
         }
         return { isValid: true, message: null };
+
     };
 
     const form2data = async (e) => {
         e.preventDefault();
         setError(null);
-        const validation = validateForm2();
 
+        const validation = validateForm2();
         if (!validation.isValid) {
             setError(validation.message);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
             return;
         }
 
         setIsSubmitting(true);
         const payload = {
-            form1Id,
             hasOngoingCondition: formState.generalHealthSafety.ongoingCondition === "Yes",
             conditionTypes: formState.generalHealthSafety.ongoingCondition === "Yes" ? formState.generalHealthSafety.details : null,
             conditionOtherText: formState.generalHealthSafety.details?.includes("Other") ? formState.generalHealthSafety.conditionOtherText : null,
@@ -120,77 +670,107 @@ export default function Phase2() {
             managingLongTermCondition: formState.medicalLifestyle.preferNotToSayMedical ? null : formState.medicalLifestyle.chronicCondition,
             preferNotToSayMedical: formState.medicalLifestyle.preferNotToSayMedical
         };
+        // Lock the page state
+        localStorage.setItem("phase2_completed", "analyzing");
+        setPageStatus("analyzing");
 
         try {
             const response = await fetch("/api/Form2", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload),
+                body: JSON.stringify(payload), // Simplified for brevity, use your payload logic
             });
-            if (response.ok) {
-                const data = await response.json();
-                const newForm2Id = data.form2Id; // Capture ID immediately
-                // setform2Id(newForm2Id);
 
-                setAiAnalyzing(true);
-                await Ailayer2(newForm2Id); // Pass directly to avoid state lag
+            if (response.status === 200) {
+                await Ailayer2();
             } else {
-                setError("Submission failed. Please try again.");
-                setIsSubmitting(false); // Reset if failed
+                throw new Error("Form submission failed");
             }
         } catch (err) {
-            setError("A server error occurred.");
-        } finally {
+            localStorage.setItem("phase2_completed", "false");
+            setPageStatus("idle");
+            setError(err.message);
             setIsSubmitting(false);
         }
     };
 
-
-
-    /* Ai Layer2 is called */
-
-    const Ailayer2 = async (currentForm2Id) => {
+    const Ailayer2 = async () => {
         try {
             const res = await fetch("/api/Layer2", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+            });
 
-                    form1Id: form1Id,
-                    form2Id: currentForm2Id,
-                    layer1ResultId: layer1data.layer1ResultId,
-                }),
-            })
-
-            const data = await res.json()
-            setlayer2Id(data.reportId)
-
-            // setid(data.reportId)
-
-            setAnalysisComplete(true);
-            setTimeout(() => {
-                setAiAnalyzing(false);
-                setSubmitted(true);
-            }, 2000);
-
-
-            console.log("AI Layer2  RESPONSE", data)
-
+            if (res.status === 200) {
+                localStorage.setItem("phase2_completed", "true");
+                setPageStatus("completed");
+                setAnalysisComplete(true);
+            } else {
+                throw new Error("AI Processing failed");
+            }
         } catch (err) {
-            console.error("Layer 2 Error:", err.message);
-            setAiAnalyzing(false);
-            setError("AI Analysis failed.");
-        } finally {
-            setIsSubmitting(false);
+            setPageStatus("error");
+            setError("Analysis interrupted. Please reload to try resuming.");
         }
+    };
+
+    const backtohome = async () => {
+        try {
+            // localStorage.setItem("phase2_completed", "false"); // Reset on restart
+            await fetch("/api/DeleteIds", {
+                method: "GET",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+            });
+            localStorage.removeItem("phase2_completed")
+            localStorage.removeItem("phase1AnalysisCompleted")
+            router.push("/HomePage");
+        } catch (err) {
+            console.error(err.message);
+        }
+    };
+
+    // --- UI RENDER LOGIC ---
+
+    if (pageStatus === "loading") {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-[#FAF9F6]">
+                <Loader2 className="animate-spin text-[#4A675D]" size={40} />
+            </div>
+        );
     }
 
-
-    //Ai Loading Overlay
-    if (aiAnalyzing) {
+    if (pageStatus === "error") {
         return (
+            <div className="min-h-screen bg-[#F3F4F1] flex items-center justify-center p-6 text-center">
+                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="max-w-md bg-white p-10 rounded-3xl shadow-2xl border border-red-50">
+                    <div className="w-20 h-20 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <AlertTriangle size={40} />
+                    </div>
+                    <h2 className="text-2xl font-serif text-[#1A1F1E] mb-4">Phase Analysis Issue</h2>
+                    <p className="text-sm text-gray-500 leading-relaxed mb-8">{error}</p>
+                    <div className="flex flex-col gap-3">
+                        <button
+                            onClick={() => window.location.reload()}
+                            className="w-full flex items-center justify-center gap-2 bg-[#4A675D] text-white py-4 px-6 rounded-xl font-bold hover:bg-[#3d554c] transition-all"
+                        >
+                            <RefreshCw size={18} /> Reload Analysis
+                        </button>
+                        <button
+                            onClick={backtohome}
+                            className="w-full flex items-center justify-center gap-2 border border-gray-200 text-gray-600 py-4 px-6 rounded-xl font-bold hover:bg-gray-50 transition-all"
+                        >
+                            <Home size={18} /> Return to Home
+                        </button>
+                    </div>
+                </motion.div>
+            </div>
+        );
+    }
+
+    if (pageStatus === "analyzing") {
+         return (
             <div className="min-h-screen bg-[#FAF9F6] flex items-center justify-center p-6">
                 <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="bg-white p-12 rounded-[3rem] border border-[#DCE4E1] shadow-xl text-center max-w-sm w-full">
                     <div className="flex justify-center mb-6">
@@ -216,7 +796,12 @@ export default function Phase2() {
         );
     }
 
-    if (submitted) return <SuccessMessage layer2ReportId={layer2Id}></SuccessMessage>
+    if (pageStatus === "completed") {
+        return <SuccessMessage />;
+    }
+
+    // Default: Return the Form (idle state)
+
 
     return (
         <div className="min-h-screen bg-[#FAF9F6] py-16 px-6">
@@ -230,11 +815,11 @@ export default function Phase2() {
                     </p>
                 </header>
 
-                {error && (
+                {/* {error && (
                     <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mb-8 p-4 bg-red-50 border border-red-100 rounded-2xl flex items-center gap-3 text-red-600 text-sm">
                         <AlertCircle size={18} /> {error}
                     </motion.div>
-                )}
+                )}  */}
 
                 <form onSubmit={form2data} className="space-y-8">
 
@@ -445,7 +1030,7 @@ const CheckboxCard = ({ label, checked, onChange }) => (
 
 
 
-const SuccessMessage = ({ layer2ReportId }) => (
+const SuccessMessage = () => (
 
 
     <motion.div
@@ -461,10 +1046,11 @@ const SuccessMessage = ({ layer2ReportId }) => (
                 Information has been completed successfully. Your multi-layer assessment is now ready for final synthesis.
             </p>
             <Link
+
                 href="/Checkin/FinalPage"
                 className="block w-full bg-[#4A675D] text-white py-4 rounded-2xl font-bold shadow-lg shadow-[#4A675D]/20 hover:bg-[#3D564D] transition-all"
             >
-                View Final Analysis
+                Synthesize Final Analysis
             </Link>
         </div>
     </motion.div>

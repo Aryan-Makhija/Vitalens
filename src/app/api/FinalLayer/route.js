@@ -4,6 +4,7 @@ import { currentUser } from "@clerk/nextjs/server";
 
 import { GoogleGenAI } from "@google/genai";
 import { desc, eq } from "drizzle-orm";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 const ai = new GoogleGenAI({
@@ -115,7 +116,12 @@ Output:
 export async function POST(request) {
     try {
         // const { id } = await params;
-        const { layer2ReportId } = await request.json();
+
+
+        const cookieStore = await cookies();
+
+        const layer2ReportId = cookieStore.get("layer2ReportId")?.value
+        // const { layer2ReportId } = await request.json();
         if (!layer2ReportId) {
             return NextResponse.json({ error: "layer2ReportId is required" }, { status: 400 });
         }
@@ -214,7 +220,7 @@ ${JSON.stringify(layer2Report, null, 2)}
         // 5️⃣ Call AI
         // ----------------------------
         const response = await ai.models.generateContent({
-            model: "gemini-2.5-flash",
+            model: "gemini-3-flash-preview",
             config: { responseMimeType: "text/plain" },
             contents: [
                 {
@@ -296,6 +302,14 @@ ${JSON.stringify(layer2Report, null, 2)}
         // ----------------------------
         // 8️⃣ Return response
         // ----------------------------
+
+
+
+        cookieStore.delete("form1Id")
+        cookieStore.delete("form2Id")
+        cookieStore.delete("layer1ResultId")
+        cookieStore.delete("layer2ReportId")
+
         return NextResponse.json({ finalResult: saved });
 
     } catch (error) {

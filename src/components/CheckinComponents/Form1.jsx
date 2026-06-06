@@ -78,7 +78,7 @@ const Form1 = () => {
 
         // --- Requirement 2: Start AI Analysis Sequence ---
         setAiAnalyzing(true);
-        await Ailayer1(data.form1Id);
+        await Ailayer1();
       }
     } catch (err) {
       console.error("Submission Error:", err.message);
@@ -86,12 +86,13 @@ const Form1 = () => {
     }
   };
 
-  const Ailayer1 = async (id) => {
+  const Ailayer1 = async () => {
     try {
       const res = await fetch("/api/Layer1", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ form1Id: id }),
+        // body: JSON.stringify({ form1Id: id }),
       });
 
       const data = await res.json();

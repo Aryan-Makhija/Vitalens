@@ -9,9 +9,10 @@ import {
     layer2Suggestions,
     layer2WeekPlanCandidates
 } from "@/lib/config/schema";
-import { currentUser } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { GoogleGenAI } from "@google/genai";
 import { eq } from "drizzle-orm";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 const ai = new GoogleGenAI({
@@ -134,14 +135,56 @@ RETURN JSON ONLY USING THIS SCHEMA:
     "planType":"stabilization|recovery|balance",
     "goalFocus":"energy|stress|sleep|activity",
     "difficultyLevel":"low|medium",
-    "dailyActions":[
-      "string (Day 1)",
-      "string (Day 2)",
-      "string (Day 3)",
-      "string (Day 4)",
-      "string (Day 5)",
-      "string (Day 6)",
-      "string (Day 7)"
+  "dailyActions":[
+      {
+        "taskTitle":"string (Day 1 title)",
+        "task":"string (Day 1 action, 1–2 sentences, humble tone)",
+        "taskDuration":"string (e.g., '5 minutes', '10–15 minutes')",
+        "taskIntensity":"low|medium",
+        "taskFocusArea":"energy|stress|sleep|activity"
+      },
+      {
+        "taskTitle":"string (Day 2 title)",
+        "task":"string",
+        "taskDuration":"string",
+        "taskIntensity":"low|medium",
+        "taskFocusArea":"energy|stress|sleep|activity"
+      },
+      {
+        "taskTitle":"string (Day 3 title)",
+        "task":"string",
+        "taskDuration":"string",
+        "taskIntensity":"low|medium",
+        "taskFocusArea":"energy|stress|sleep|activity"
+      },
+      {
+        "taskTitle":"string (Day 4 title)",
+        "task":"string",
+        "taskDuration":"string",
+        "taskIntensity":"low|medium",
+        "taskFocusArea":"energy|stress|sleep|activity"
+      },
+      {
+        "taskTitle":"string (Day 5 title)",
+        "task":"string",
+        "taskDuration":"string",
+        "taskIntensity":"low|medium",
+        "taskFocusArea":"energy|stress|sleep|activity"
+      },
+      {
+        "taskTitle":"string (Day 6 title)",
+        "task":"string",
+        "taskDuration":"string",
+        "taskIntensity":"low|medium",
+        "taskFocusArea":"energy|stress|sleep|activity"
+      },
+      {
+        "taskTitle":"string (Day 7 title)",
+        "task":"string",
+        "taskDuration":"string",
+        "taskIntensity":"low|medium",
+        "taskFocusArea":"energy|stress|sleep|activity"
+      }
     ],
     "safetyLevel":"high"
   }
@@ -152,7 +195,35 @@ RETURN JSON ONLY USING THIS SCHEMA:
 
 export async function POST(request) {
     try {
-        const { form1Id,form2Id, layer1ResultId } = await request.json();
+        // Auhtentication
+        // const {userId} = auth();
+        // if(!userId){ 
+        //      return NextResponse.json({error:"Unauthorized"},{status:401})
+        // }
+
+
+        const cookieStore = await cookies();
+
+
+//Getting Ids from Cookies
+        const form1Id = cookieStore.get("form1Id")?.value
+        const form2Id = cookieStore.get("form2Id")?.value
+        const layer1ResultId = cookieStore.get("layer1ResultId")?.value
+
+
+
+       if (!form1Id) {
+           return NextResponse.json({ error: "No Form1 Id Found" }, { status: 400 });
+          }
+           if (!form2Id) {
+        return NextResponse.json({ error: "No Form2 Id Found" }, { status: 400 });
+             }
+        if (!layer1ResultId) {
+        return NextResponse.json({ error: "No layer1ResultId  Found" }, { status: 400 });
+         }
+
+
+        // const { form1Id,form2Id, layer1ResultId } = await request.json();
 
         // ---------------------------
         // 2️⃣ Fetch all data
@@ -173,7 +244,7 @@ export async function POST(request) {
         // 3️⃣ Call AI
         // ---------------------------
         const aiResponse = await ai.models.generateContent({
-            model: "gemini-2.5-flash",
+            model: "gemini-3-flash-preview",
             config: { responseMimeType: "text/plain" },
             contents: [
                 {
@@ -283,6 +354,15 @@ export async function POST(request) {
         // ---------------------------
         // 5️⃣ Response
         // ---------------------------
+  cookieStore.set("layer2ReportId",reportId,{
+    httpOnly:true,
+    secure:true,
+    sameSite:'strict',
+    path:'/',
+    maxAge:60*30
+
+})
+
         return NextResponse.json({
             reportId,
             status: parsed.report.status

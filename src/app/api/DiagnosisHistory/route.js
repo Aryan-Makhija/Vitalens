@@ -1,7 +1,7 @@
 import db from "@/lib/config/db";
 import { diagnosisHistory, finalResultsTable, layer1ResultsTable } from "@/lib/config/schema";
 import { currentUser } from "@clerk/nextjs/server";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
 
@@ -66,7 +66,7 @@ export async function GET() {
             return NextResponse.json({ message: "user not Authenticated" }, { status: 401 })
         }
 
-        const result = await db.select().from(diagnosisHistory).where(eq(diagnosisHistory.userEmail, user.primaryEmailAddress.emailAddress))
+        const result = await db.select().from(diagnosisHistory).where(eq(diagnosisHistory.userEmail, user.primaryEmailAddress.emailAddress)).orderBy(desc(diagnosisHistory.createdAt))
 
         return NextResponse.json({
             Allhistory: result

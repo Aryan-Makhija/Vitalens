@@ -1,7 +1,8 @@
 
 import db from "@/lib/config/db";
 import { form1Table } from "@/lib/config/schema";
-import { currentUser } from "@clerk/nextjs/server"
+import { auth, currentUser } from "@clerk/nextjs/server"
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 
@@ -11,6 +12,9 @@ export async function POST(request) {
     const { age, gender, bedtime, wakeUpTime, sleepQuality, activityLevel, steps, foodQuality, waterIntake, stresslevel, mood, energylevel, healthDescription } = await request.json()
 
     const user = await currentUser();
+
+
+    const cookieStore = await cookies();
 
     if (!user?.primaryEmailAddress?.emailAddress) {
         return NextResponse.json({
@@ -62,6 +66,16 @@ export async function POST(request) {
             healthDescription
         })
         .returning();
+
+
+    cookieStore.set("form1Id", result.id, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+        path: '/',
+        maxAge: 60 * 30,
+    })
+
 
     return NextResponse.json({
         form1Id: result.id,

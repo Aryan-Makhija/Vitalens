@@ -6,6 +6,7 @@ export const usersTable = pgTable("users", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: varchar({ length: 255 }).notNull(),
   email: varchar({ length: 255 }).notNull().unique(),
+  isUserEnrolled: boolean().default(false)
 });
 
 
@@ -385,7 +386,20 @@ export const layer2WeekPlanCandidates = pgTable(
 
     safetyLevel: text("safety_level").notNull(), // high only
 
-    createdAt: timestamp("created_at").defaultNow().notNull()
+    //Check  is user has enrolled in the plan or not 
+    isUserEnrolled: boolean().default(false),
+
+    // start date  of plan
+    startedAt: timestamp(),
+
+    //Plan is completed or not 
+    isCompleted: boolean().default(false),
+
+    //IS FeedbackForm Filled for this Weeklyplan or not 
+    isFeedBackCompleted:boolean().default(false),
+
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
   }
 );
 
@@ -448,37 +462,6 @@ export const finalResultsTable = pgTable("final_results", {
 });
 
 
-
-// export const weeklyFeedbackForm = pgTable("weekly_feedback_form", {
-//   id: uuid("id").defaultRandom().primaryKey(),
-
-//   // Link to the user
-//   userEmail: varchar()
-//     .references(() => usersTable.email)
-//     .notNull(),
-
-//   // Link to the weekly plan followed
-//   weekPlanId: integer()
-//     .notNull(),
-
-
-//   layer2ReportId: uuid()
-//     .references(() => layer2Reports.id)
-//     .notNull(),
-
-//   // Free-text input capturing user's feedback
-//   feedbackText: text("feedback_text").notNull(),
-
-//   // Optional numeric cues for easier AI interpretation
-//   energyLevel: real("energy_level"),     // 1–5 scale
-//   stressLevel: real("stress_level"),     // 1–5 scale
-//   sleepQuality: real("sleep_quality"),   // 1–5 scale
-//   hydrationLevel: real("hydration_level"), // 1–5 scale
-//   activityLevel: real("activity_level"), // 1–5 scale
-
-//   createdAt: timestamp("created_at").defaultNow().notNull()
-// });
-
 export const weeklyFeedbackFormTable = pgTable("weekly_feedback_form", {
   id: uuid("id").defaultRandom().primaryKey(),
 
@@ -535,10 +518,7 @@ export const weeklyFeedbackFormTable = pgTable("weekly_feedback_form", {
 });
 
 
-
-
 // History schema
-
 export const diagnosisHistory = pgTable("diagnosis_history", {
   id: uuid("id").defaultRandom().primaryKey(),
 

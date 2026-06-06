@@ -123,7 +123,7 @@ RETURN STRICT JSON:
 export async function POST(req) {
   try {
     const {
-      layer2ReportId,
+      weeklyplanId,
       feedbackText,
       energyLevel,
       stressLevel,
@@ -133,24 +133,26 @@ export async function POST(req) {
       adherenceScore
     } = await req.json();
 
+
+
+
+    const [weekPlan] = await db
+      .select()
+      .from(layer2WeekPlanCandidates)
+      .where(eq(layer2WeekPlanCandidates.id, weeklyplanId))
+
+
+    // const layer2ReportId = weekPlan.reportId
     const report = await db
       .select()
       .from(layer2Reports)
-      .where(eq(layer2Reports.id, layer2ReportId))
+      .where(eq(layer2Reports.id, weekPlan.reportId))
       .then(r => r[0]);
 
 
 
-    const weekPlan = await db
-      .select()
-      .from(layer2WeekPlanCandidates)
-      .where(eq(layer2WeekPlanCandidates.userEmail, report.userEmail))
-      .orderBy(desc(layer2WeekPlanCandidates.createdAt))
-      .limit(1)
-      .then(rows => rows[0]);
-
-
-    const weekPlanId = weekPlan.id
+    const weekPlanId = weeklyplanId
+    const layer2ReportId = report.id
 
     const finalResult = await db.select().from(finalResultsTable).where(eq(finalResultsTable.userEmail, report.userEmail)).orderBy(desc(finalResultsTable.createdAt)).limit(1).then(rows => rows[0])
 
@@ -227,6 +229,12 @@ export async function POST(req) {
         finalStatus: parsed.newStatus
       })
       .where(eq(finalResultsTable.id, finalResult.id));
+
+
+    //Updated the WeeklyPlan FeedbackForm Completed Status
+    await db.update(layer2WeekPlanCandidates).set({
+      isFeedBackCompleted: true
+    }).where(eq(layer2WeekPlanCandidates.id, weeklyplanId))
 
 
     //Updating the History
