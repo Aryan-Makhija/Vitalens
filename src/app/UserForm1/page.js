@@ -2,6 +2,7 @@
 
 import AILayer2 from "@/components/AI_layers/AILayer2";
 import FinalLayer from "@/components/AI_layers/FinalLayer";
+import Footer from "@/components/LandingPageComponenets/Footer";
 import { Button } from "@/components/ui/button";
 import { Layer1Response } from "@/Context/Layer1Response";
 import { useContext, useState } from "react";
@@ -13,11 +14,6 @@ export default function Form1Page() {
 
   const { setlayer1data, layer1data, form1Id, setform1Id } = useContext(Layer1Response)
 
-  console.log("layer1data", layer1data)
-  console.log("form1result", form1Id)
-
-
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -55,13 +51,9 @@ export default function Form1Page() {
       const data = await res.json();
 
 
-
       setform1Id(data.form1Id)
 
-      console.log("Form 1 saved:", data);
-
-      // You can redirect to Layer 1 analysis here
-      // router.push(`/analyze/${data.form1Id}`);
+  
 
     } catch (err) {
       setError(err.message);
@@ -192,6 +184,7 @@ export default function Form1Page() {
       <AILayer2></AILayer2>
       <FinalLayer></FinalLayer>
 
+      <Footer></Footer>
     </div>
   );
 }

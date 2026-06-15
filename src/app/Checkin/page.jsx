@@ -222,6 +222,8 @@ import {
 import Link from "next/link";
 import { Layer1Response } from "@/Context/Layer1Response";
 import { useRouter } from "next/navigation";
+import Footer from "@/components/LandingPageComponenets/Footer";
+import DashboardNavbar from "@/components/HomePageComponents/DashboardNavbar";
 
 const Checkin = () => {
     const [step, setStep] = useState(1);
@@ -437,7 +439,8 @@ const Checkin = () => {
 
     return (
         <div className="min-h-screen bg-[#FAF9F6] py-12 px-6">
-            <div className="max-w-xl mx-auto">
+         
+            <div className="max-w-xl mx-auto mb-10">
                 <div className="flex items-center justify-between mb-10">
                     <Link href="/HomePage" className="flex items-center gap-2 text-[#8B7E66] hover:text-[#4A675D] transition-colors group">
                         <X size={18} className="group-hover:rotate-90 transition-transform" />
@@ -548,6 +551,7 @@ const Checkin = () => {
                     </AnimatePresence>
                 </form>
             </div>
+            <Footer></Footer>
         </div>
     );
 };

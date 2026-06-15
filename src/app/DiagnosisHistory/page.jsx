@@ -13,6 +13,8 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import DashboardNavbar from "@/components/HomePageComponents/DashboardNavbar";
+import Footer from "@/components/LandingPageComponenets/Footer";
 
 export default function DiagnosisHistory() {
     const [history, setHistory] = useState([]);
@@ -73,8 +75,10 @@ export default function DiagnosisHistory() {
 
     return (
         <div className="min-h-screen bg-[#FAF9F6] pb-20">
+            <DashboardNavbar></DashboardNavbar>
+
             {/* Header Section */}
-            <div className="bg-white border-b border-[#DCE4E1] sticky top-0 z-10 px-6 py-8">
+            <div className="bg-white border-b border-[#DCE4E1]   px-6 py-8">
                 <div className="max-w-4xl mx-auto">
                     <Link href="/HomePage">
                         <button
@@ -162,6 +166,8 @@ export default function DiagnosisHistory() {
                     </div>
                 )}
             </div>
+
+            <Footer></Footer>
         </div>
     );
 }

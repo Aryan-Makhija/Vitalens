@@ -551,6 +551,8 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Footer from "@/components/LandingPageComponenets/Footer";
+import DashboardNavbar from "@/components/HomePageComponents/DashboardNavbar";
 
 export default function Phase2() {
     const { layer1data } = useContext(Layer1Response);
@@ -770,7 +772,7 @@ export default function Phase2() {
     }
 
     if (pageStatus === "analyzing") {
-         return (
+        return (
             <div className="min-h-screen bg-[#FAF9F6] flex items-center justify-center p-6">
                 <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="bg-white p-12 rounded-[3rem] border border-[#DCE4E1] shadow-xl text-center max-w-sm w-full">
                     <div className="flex justify-center mb-6">
@@ -805,7 +807,8 @@ export default function Phase2() {
 
     return (
         <div className="min-h-screen bg-[#FAF9F6] py-16 px-6">
-            <div className="max-w-3xl mx-auto">
+            <DashboardNavbar></DashboardNavbar>
+            <div className="max-w-3xl mx-auto mb-10">
                 {/* Header */}
                 <header className="mb-12 text-center">
                     <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#8B7E66] mb-4 block">Phase 2: Depth Analysis</span>
@@ -966,6 +969,7 @@ export default function Phase2() {
                     </button>
                 </form>
             </div>
+            <Footer></Footer>
         </div>
     );
 }
