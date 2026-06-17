@@ -193,7 +193,7 @@ const Navbar = () => {
             <SignUpButton mode="modal">
               <button className="bg-[#4A675D] text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-[#3d554c] transition-all shadow-md active:scale-95">
                 <span className="hidden xs:inline">Start Free Check-in</span>
-                <span className="xs:hidden">Start</span>
+                <span className="xs:hidden">Signup</span>
               </button>
             </SignUpButton>
           </SignedOut>

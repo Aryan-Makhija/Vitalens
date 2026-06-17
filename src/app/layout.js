@@ -15,8 +15,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "VitaLens",
-  description: "Ai-Powered Health Insights Platform",
+  title: 'VITALENS — Clinical Archives',
+  description: 'AI-Powered Health Synthesis and Tracking Protocol.',
+  icons: {
+    icon: '/vitalens_favicon.svg', // Points to your public/favicon.svg file
+  },
 };
 
 export default function RootLayout({ children }) {
