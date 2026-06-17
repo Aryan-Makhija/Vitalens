@@ -13,7 +13,7 @@ export default function Form2Page() {
     if (!layer1data) {
         return <div>Loading...</div>;
     }
-    console.log("form2Id", form2Id)
+    // console.log("form2Id", form2Id)
     // Initial state for each module
     const [formState, setFormState] = useState({
         generalHealthSafety: {
@@ -254,7 +254,7 @@ export default function Form2Page() {
         }
 
         const data = await response.json();
-        console.log("Form2 resposne", data)
+        // console.log("Form2 resposne", data)
         setform2Id(data.form2Id)
 
     };
@@ -267,7 +267,7 @@ export default function Form2Page() {
 
     // };
 
-    console.log(formState)
+    // console.log(formState)
     return (
         <form onSubmit={form2data} className="max-w-3xl mx-auto p-6 space-y-6">
             {/* Module 1: General Health Safety */}
