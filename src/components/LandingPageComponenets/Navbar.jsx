@@ -110,6 +110,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Activity, Menu, X, ChevronRight } from "lucide-react";
 import { SignInButton, SignUpButton, UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import Link from "next/link";
+import { VitaLensLogo } from "../vitalensLogo/logo";
 
 const navItems = [
   { name: "Features", href: "#features" },
@@ -143,9 +144,10 @@ const Navbar = () => {
 
         {/* LEFT SIDE: Brand Logo */}
         <Link href="/" className="flex items-center gap-2 group relative z-[110]">
-          <div className="w-9 h-9 rounded-lg bg-[#4A675D] flex items-center justify-center transition-transform group-hover:scale-105">
+          {/* <div className="w-9 h-9 rounded-lg bg-[#4A675D] flex items-center justify-center transition-transform group-hover:scale-105">
             <Activity className="w-5 h-5 text-white" />
-          </div>
+          </div> */}
+          <VitaLensLogo></VitaLensLogo>
           <span className="font-serif font-bold text-xl text-[#1A1F1E] tracking-tight">
             VitaLens
           </span>

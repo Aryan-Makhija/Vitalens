@@ -75,6 +75,7 @@ Output:
 
   "statusHeadline": "",
   "statusSummary": "",
+  "CanEnrollWeeklyPlan":true
 
 }
 
@@ -246,27 +247,61 @@ ${JSON.stringify(layer2Report, null, 2)}
             return NextResponse.json({ error: "AI response is not valid JSON" }, { status: 500 });
         }
 
-
-        // ----------------------------
-        // 7️⃣ Store in final_results table
-        // ----------------------------
-        const [saved] = await db
-            .insert(finalResultsTable)
-            .values({
-                userEmail: layer2Report.userEmail,
-                layer2ReportId,
-                ...finalLayerOutput,
-                ...governanceFields
-            })
-            .returning();
-
-
-        // -----------------------------------
-        //  Maintaining the Diagnosis history
-        // ----------------------------------
+        //     //  Stops Enrolling in the Previous Plan 
+        //  const [report] = await  db
+        //                       .update(finalResultsTable)
+        //                       .set({
+        //                           CanEnroll_WeeklyPlan: false,
+        //                       })
+        //                       .where(eq(userEmail, layer2Report.userEmail))
 
 
 
+
+        //     // ----------------------------
+        //     // 7️⃣ Store in final_results table
+        //     // ----------------------------
+        //     const [saved] = await db
+        //         .insert(finalResultsTable)
+        //         .values({
+        //             userEmail: layer2Report.userEmail,
+        //             layer2ReportId,
+        //             ...finalLayerOutput,
+        //             ...governanceFields
+        //         })
+        //         .returning();
+
+
+        //     // -----------------------------------
+        //     //  Maintaining the Diagnosis history
+        //     // ----------------------------------
+
+
+
+
+        const [, saved] = await Promise.all([
+            // Stop enrolling in previous plan
+            db
+                .update(finalResultsTable)
+                .set({
+                    CanEnrollWeeklyPlan: false,
+                })
+                .where(eq(userEmail, layer2Report.userEmail)),
+
+            // Store in final_results table
+            db
+                .insert(finalResultsTable)
+                .values({
+                    userEmail: layer2Report.userEmail,
+                    layer2ReportId,
+                    ...finalLayerOutput,
+                    ...governanceFields,
+                })
+                .returning()
+                .then(([result]) => result),
+        ]);
+
+        // Maintain diagnosis history
         await db.insert(diagnosisHistory).values({
             userEmail: layer2Report.userEmail,
             layer2ReportId,
@@ -274,9 +309,7 @@ ${JSON.stringify(layer2Report, null, 2)}
             finalStatus: saved.finalStatus,
             statusHeadline: saved.statusHeadline,
             statusSummary: saved.statusSummary,
-
-        })
-
+        });
 
         // await db.transaction(async (tx) => {
         //     const [saved] = await tx

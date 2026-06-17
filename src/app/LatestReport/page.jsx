@@ -20,6 +20,9 @@ export default function LatestReportPage() {
     const [suggestions, setsuggestions] = useState([]);
     const [diagnosisTimestamp, setDiagnosisTimestamp] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isOutdatedModalOpen, setIsOutdatedModalOpen] = useState(false);
+
+
 
     useEffect(() => {
         fetchLatestReport();
@@ -182,7 +185,7 @@ export default function LatestReportPage() {
                                         <Circle className={`w-2.5 h-2.5 fill-current ${theme.accentText} animate-pulse`} />
                                         <span>System Node: {reportData.finalStatus || "UNKNOWN"}</span>
                                     </div>
-                                  
+
                                 </div>
                                 <h3 className="text-3xl md:text-4xl font-serif font-normal leading-tight tracking-tight text-stone-100">
                                     {reportData.statusHeadline}
@@ -338,13 +341,13 @@ export default function LatestReportPage() {
                                                 <span>Dynamic Integration Available</span>
                                             </div>
                                             <h4 className="text-2xl font-serif tracking-tight flex items-center gap-2 text-stone-100">
-                                                <Calendar className="text-[#4A675D]" size={22} /> 7-Day Optimization Program
+                                                <Calendar className="text-[#174032]" size={22} /> 7-Day Optimization Program
                                             </h4>
                                             <p className="text-xs text-stone-400 leading-relaxed max-w-xl font-normal">
                                                 An advanced, tailored multi-day workflow configuration sync has been initialized for this generation cycle. Enrollment loads objectives directly into your active dashboard.
                                             </p>
                                             <div className="pt-3">
-                                                <button onClick={() => setIsModalOpen(true)} className="w-full sm:w-auto px-6 py-2.5 bg-[#4A675D] hover:bg-[#3d554c] text-white rounded font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-md">
+                                                <button onClick={() => reportData.CanEnrollWeeklyPlan == true ? setIsModalOpen(true) : setIsOutdatedModalOpen(true)} className="w-full sm:w-auto px-6 py-2.5 bg-[#4A675D] hover:bg-[#3d554c] text-white rounded font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-md">
                                                     Enroll Now <ChevronRight size={14} />
                                                 </button>
                                             </div>
@@ -430,7 +433,7 @@ export default function LatestReportPage() {
                         <Home size={15} /> Return to Primary Hub
                     </Link>
                     <button onClick={() => window.print()} className="inline-flex items-center gap-2 px-5 py-2 border border-[#DCE4E1] text-gray-600 text-xs font-bold uppercase tracking-wider rounded bg-white hover:bg-stone-50 shadow-sm transition-all">
-                        <Printer size={14} /> Print Report 
+                        <Printer size={14} /> Print Report
                     </button>
                 </div>
             </div>
@@ -487,7 +490,76 @@ export default function LatestReportPage() {
                     </div>
                 )}
             </AnimatePresence>
-        </div>
+
+            <AnimatePresence>
+                {isOutdatedModalOpen && (
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                        {/* Backdrop Blur Layer */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setIsOutdatedModalOpen(false)}
+                            className="absolute inset-0 bg-stone-950/40 backdrop-blur-sm"
+                        />
+
+                        {/* Modal Body */}
+                        <motion.div
+                            initial={{ scale: 0.96, opacity: 0, y: 10 }}
+                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                            exit={{ scale: 0.96, opacity: 0, y: 10 }}
+                            className="relative w-full max-w-md bg-white rounded-xl shadow-2xl overflow-hidden border border-[#DCE4E1]"
+                        >
+                            <div className="p-6 space-y-6">
+                                {/* Header Controls */}
+                                <div className="flex justify-between items-start">
+                                    <div className="w-10 h-10 bg-amber-50 rounded-full flex items-center justify-center text-amber-600 border border-amber-100">
+                                        <AlertTriangle size={20} />
+                                    </div>
+                                    <button
+                                        onClick={() => setIsOutdatedModalOpen(false)}
+                                        className="text-gray-400 hover:text-gray-600 transition-colors"
+                                    >
+                                        <X size={18} />
+                                    </button>
+                                </div>
+
+                                {/* Headline and Narrative */}
+                                <div className="space-y-2">
+                                    <h3 className="text-xl font-serif text-[#1A1F1E] tracking-tight">
+                                        Protocol Superseded
+                                    </h3>
+                                    <p className="text-xs text-gray-500 leading-relaxed">
+                                        You have generated a more recent health diagnosis since this historical report was recorded. To guarantee accuracy, older setup frameworks are automatically discarded.
+                                    </p>
+                                </div>
+
+                                {/* Instructive Callout Block */}
+                                <div className="bg-amber-50/50 border-l-4 border-amber-500 p-4 text-xs text-gray-700 leading-relaxed rounded-r">
+                                    This plan is no longer valid. To initialize your active cycles, please proceed to your primary <span className="font-bold text-[#4A675D]">Dashboard</span> and activate the protocol generated from your <span className="font-bold text-[#4A675D]">most recent health scan</span>.
+                                </div>
+
+                                {/* CTA Actions */}
+                                <div className="flex flex-col gap-2 pt-2">
+                                    <Link
+                                        href="/Dashboard"
+                                        className="flex items-center justify-center gap-2 bg-[#4A675D] text-white py-3 rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-[#3d554c] transition-all shadow-sm"
+                                    >
+                                        <LayoutDashboard size={15} /> Go to Active Dashboard
+                                    </Link>
+                                    <button
+                                        onClick={() => setIsOutdatedModalOpen(false)}
+                                        className="text-gray-400 hover:text-gray-600 font-bold py-2 text-xs uppercase tracking-wider transition-colors"
+                                    >
+                                        Dismiss Window
+                                    </button>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
+        </div >
     );
 }
 
@@ -869,7 +941,7 @@ const LoadingOverlay = ({ message }) => (
 //                 {isModalOpen && (
 //                     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
 //                         {/* Backdrop */}
-//                         <motion.div 
+//                         <motion.div
 //                             initial={{ opacity: 0 }}
 //                             animate={{ opacity: 1 }}
 //                             exit={{ opacity: 0 }}
@@ -878,7 +950,7 @@ const LoadingOverlay = ({ message }) => (
 //                         />
 
 //                         {/* Modal Content */}
-//                         <motion.div 
+//                         <motion.div
 //                             initial={{ scale: 0.9, opacity: 0, y: 20 }}
 //                             animate={{ scale: 1, opacity: 1, y: 0 }}
 //                             exit={{ scale: 0.9, opacity: 0, y: 20 }}
@@ -889,7 +961,7 @@ const LoadingOverlay = ({ message }) => (
 //                                     <div className="w-12 h-12 bg-[#F3F4F1] rounded-full flex items-center justify-center text-[#4A675D]">
 //                                         <Calendar size={24} />
 //                                     </div>
-//                                     <button 
+//                                     <button
 //                                         onClick={() => setIsModalOpen(false)}
 //                                         className="text-gray-400 hover:text-gray-600 transition-colors"
 //                                     >
@@ -905,13 +977,13 @@ const LoadingOverlay = ({ message }) => (
 //                                 </div>
 
 //                                 <div className="flex flex-col gap-3">
-//                                     <Link 
-//                                         href="/Dashboard" 
+//                                     <Link
+//                                         href="/Dashboard"
 //                                         className="flex items-center justify-center gap-2 bg-[#4A675D] text-white py-4 rounded-xl font-bold hover:bg-[#3d554c] transition-all shadow-lg shadow-[#4A675D]/20"
 //                                     >
 //                                         <LayoutDashboard size={18} /> Go to Dashboard
 //                                     </Link>
-//                                     <button 
+//                                     <button
 //                                         onClick={() => setIsModalOpen(false)}
 //                                         className="text-gray-500 font-bold py-2 text-sm hover:text-gray-800"
 //                                     >

@@ -451,6 +451,12 @@ export const finalResultsTable = pgTable("final_results", {
 
   showWeeklyPlan: boolean("show_weekly_plan").default(false),
 
+  // ------------------
+  // Weekly plan  Avaailability
+  // -----------------------------
+
+  CanEnrollWeeklyPlan :boolean().default(false),
+
   // ----------------------------------
   // TRACEABILITY
   // ----------------------------------

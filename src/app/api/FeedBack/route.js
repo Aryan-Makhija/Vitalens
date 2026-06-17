@@ -238,9 +238,9 @@ export async function POST(req) {
 
 
     //Updating the History
-    // await db.update(diagnosisHistory).set({
-    //   weeklyFeedbackFormId: savedFeedback.id,
-    // }).where(eq(finalResultsTable.id, finalResult.id))
+    await db.update(diagnosisHistory).set({
+      weeklyFeedbackFormId: savedFeedback.id,
+    }).where(eq(finalResultsTable.id, finalResult.id))
 
     return NextResponse.json({
       feedbackId: savedFeedback.id,
