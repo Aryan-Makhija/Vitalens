@@ -244,7 +244,7 @@ export async function POST(request) {
         // 3️⃣ Call AI
         // ---------------------------
         const aiResponse = await ai.models.generateContent({
-            model: "gemini-3-flash-preview",
+            model: "gemini-2.5-flash",
             config: { responseMimeType: "text/plain" },
             contents: [
                 {

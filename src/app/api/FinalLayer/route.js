@@ -221,7 +221,7 @@ ${JSON.stringify(layer2Report, null, 2)}
         // 5️⃣ Call AI
         // ----------------------------
         const response = await ai.models.generateContent({
-            model: "gemini-3-flash-preview",
+            model: "gemini-2.5-flash",
             config: { responseMimeType: "text/plain" },
             contents: [
                 {

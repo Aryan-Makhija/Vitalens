@@ -357,8 +357,23 @@ const Checkin = () => {
         }
     };
 
-    const handleReload = () => {
-        window.location.reload();
+    const handleReload = async () => {
+        try {
+            await fetch("/api/DeleteIds", {
+                method: "GET",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" }
+            });
+            localStorage.removeItem("phase1AnalysisCompleted");
+            router.push("/HomePage");
+        } catch (err) {
+            console.log(err.message);
+            router.push("/HomePage");
+        }
+
+        setTimeout(() => {
+            window.location.reload();
+        }, 1000);
     };
 
     const backtohome = async () => {
@@ -439,7 +454,7 @@ const Checkin = () => {
 
     return (
         <div className="min-h-screen bg-[#FAF9F6] py-12 px-6">
-         
+
             <div className="max-w-xl mx-auto mb-10">
                 <div className="flex items-center justify-between mb-10">
                     <Link href="/HomePage" className="flex items-center gap-2 text-[#8B7E66] hover:text-[#4A675D] transition-colors group">
