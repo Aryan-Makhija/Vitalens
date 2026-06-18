@@ -4,6 +4,12 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Shield, Brain, Heart, Sparkles } from "lucide-react";
 import Link from "next/link";
+import {
+    SignedIn,
+    SignedOut,
+    SignInButton,
+    SignUpButton,
+} from "@clerk/nextjs";
 
 const HeroSection = () => (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 bg-[#FAF9F6]">
@@ -65,16 +71,31 @@ const HeroSection = () => (
                     transition={{ duration: 0.8, delay: 0.3 }}
                     className="flex flex-col sm:flex-row items-center justify-center gap-6"
                 >
-                    <Link href="/HomePage">
-                        <motion.button
-                            whileHover={{ scale: 1.05, backgroundColor: "#3D564D" }}
-                            whileTap={{ scale: 0.98 }}
-                            className="bg-[#4A675D] text-white px-10 py-5 rounded-2xl text-base font-bold shadow-[0_20px_40px_-10px_rgba(74,103,93,0.3)] flex items-center gap-3 group transition-all"
-                        >
-                            Start Your Free Check-in
-                            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                        </motion.button>
-                    </Link>
+                    <SignedOut>
+                        <SignInButton mode="modal">
+                            <motion.button
+                                whileHover={{ scale: 1.05, backgroundColor: "#3D564D" }}
+                                whileTap={{ scale: 0.98 }}
+                                className="bg-[#4A675D] text-white px-10 py-5 rounded-2xl text-base font-bold shadow-[0_20px_40px_-10px_rgba(74,103,93,0.3)] flex items-center gap-3 group transition-all"
+                            >
+                                Start Your Free Check-in
+                                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                            </motion.button>
+                        </SignInButton>
+                    </SignedOut>
+
+                    <SignedIn>
+                        <Link href="/HomePage">
+                            <motion.button
+                                whileHover={{ scale: 1.05, backgroundColor: "#3D564D" }}
+                                whileTap={{ scale: 0.98 }}
+                                className="bg-[#4A675D] text-white px-10 py-5 rounded-2xl text-base font-bold shadow-[0_20px_40px_-10px_rgba(74,103,93,0.3)] flex items-center gap-3 group transition-all"
+                            >
+                                Dashboard
+                                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                            </motion.button>
+                        </Link>
+                    </SignedIn>
 
                     <a href="#how-it-works">
 
