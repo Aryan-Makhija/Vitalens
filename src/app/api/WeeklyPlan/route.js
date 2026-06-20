@@ -21,6 +21,8 @@ export async function GET(request) {
             );
         }
 
+        // console.log(user?.primaryEmailAddress?.emailAddress);
+
 
         // const { day } = await params
         const { searchParams } = new URL(request.url);
@@ -38,6 +40,8 @@ export async function GET(request) {
             .orderBy(desc(layer2WeekPlanCandidates.createdAt))
             .limit(1)
 
+
+        // console.log(plan)
         if (!plan || !plan.startedAt) {
             return NextResponse.json(
                 { error: "Plan not started yet" },
@@ -55,6 +59,7 @@ export async function GET(request) {
 
         const now = new Date();
         const startDate = new Date(plan.startedAt);
+        console.log(startDate)
 
         // Convert both to IST calendar dates
         const todayIST = new Date(
@@ -94,7 +99,7 @@ export async function GET(request) {
 
                 db.update(usersTable).set({
                     isUserEnrolled: false
-                }).where(eq(user.emailAddresses, user.primaryEmailAddress.emailAddress))
+                }).where(eq(usersTable.email, user.primaryEmailAddress.emailAddress))
             ])
         }
 

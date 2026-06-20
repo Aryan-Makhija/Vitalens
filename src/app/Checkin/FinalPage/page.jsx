@@ -125,8 +125,8 @@ export default function FinalReportPage() {
             if (response.ok) {
 
                 localStorage.removeItem("report_generated");
-            localStorage.removeItem("phase2_completed")
-            localStorage.removeItem("phase1AnalysisCompleted")
+                localStorage.removeItem("phase2_completed")
+                localStorage.removeItem("phase1AnalysisCompleted")
                 router.push("/HomePage");
 
             }
@@ -191,9 +191,15 @@ export default function FinalReportPage() {
                     Please return home to restart the diagnosis process.
                 </p>
                 <div className="flex flex-col gap-3">
-                    <div onClick={backtohome} className="cursor-pointer flex items-center justify-center gap-2 bg-[#4A675D] text-white py-3 px-6 rounded-lg font-bold hover:bg-[#3d554c] transition-all">
+                    {/* <div onClick={backtohome} className="cursor-pointer flex items-center justify-center gap-2 bg-[#4A675D] text-white py-3 px-6 rounded-lg font-bold hover:bg-[#3d554c] transition-all">
                         <Home size={18} /> Go to Home Page
-                    </div>
+                    </div> */}
+                    <button
+                        onClick={() => window.location.reload()}
+                        className="w-full flex items-center justify-center gap-2 bg-[#4A675D] text-white py-4 px-6 rounded-xl font-bold hover:bg-[#3d554c] transition-all"
+                    >
+                        <RefreshCw size={18} /> Reload Report Generation 
+                    </button>
                     <div onClick={backtohome} className=" cursor-pointer flex items-center justify-center gap-2 text-[#4A675D] font-bold py-2 hover:underline">
                         <LayoutDashboard size={18} /> Open Dashboard
                     </div>

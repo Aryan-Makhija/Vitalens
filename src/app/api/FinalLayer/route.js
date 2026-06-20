@@ -286,7 +286,7 @@ ${JSON.stringify(layer2Report, null, 2)}
                 .set({
                     CanEnrollWeeklyPlan: false,
                 })
-                .where(eq(userEmail, layer2Report.userEmail)),
+                .where(eq(finalResultsTable.userEmail, layer2Report.userEmail)),
 
             // Store in final_results table
             db
