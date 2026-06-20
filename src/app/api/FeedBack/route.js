@@ -1,5 +1,6 @@
 import db from "@/lib/config/db";
 import { diagnosisHistory, finalResultsTable, layer2ConcernAreas, layer2PositiveSignals, layer2Reports, layer2WeekPlanCandidates, weeklyFeedbackFormTable } from "@/lib/config/schema";
+import { currentUser } from "@clerk/nextjs/server";
 import { GoogleGenAI } from "@google/genai";
 import { desc, eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
@@ -253,3 +254,6 @@ export async function POST(req) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
+
+
+

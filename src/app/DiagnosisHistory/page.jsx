@@ -122,7 +122,7 @@ export default function DiagnosisHistory() {
                                     transition={{ delay: index * 0.05 }}
                                     whileHover={{ y: -4 }}
                                     className="bg-white border border-[#DCE4E1] rounded-[1.5rem] p-6 cursor-pointer hover:shadow-2xl hover:shadow-[#4A675D]/5 transition-all group relative"
-                                    onClick={() => router.push(`/ReportDetail?id=${report.finalResultsId}`)}
+                                    onClick={() => router.push(`/ReportDetail?id=${report.finalResultsId}&id2=${report.weeklyFeedbackFormId || ""}`)}
                                 >
                                     <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
                                         <div className="flex-1">

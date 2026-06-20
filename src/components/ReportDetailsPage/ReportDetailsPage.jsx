@@ -25,6 +25,7 @@ export default function LatestReportPage() {
     const [isOutdatedModalOpen, setIsOutdatedModalOpen] = useState(false);
     const searchParams = useSearchParams();
     const id = searchParams.get('id');
+    const id2 = searchParams.get('id2');
     useEffect(() => {
         fetchLatestReport();
     }, []);
@@ -160,21 +161,42 @@ export default function LatestReportPage() {
             <div className="max-w-6xl mx-auto">
 
                 {/* TOP PLATFORM HEADER */}
-                <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#DCE4E1] pb-4">
-                    <div>
-                        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.25em] text-[#8B7E66] mb-1">
-                            <ClipboardList size={14} className="text-[#4A675D]" />
+                <div className="mb-6 flex flex-col lg:flex-row lg:items-center justify-between gap-6 border-b border-[#DCE4E1] pb-6">
+                    {/* Left Side: Branded Headers */}
+                    <div className="space-y-1.5">
+                        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.25em] text-[#8B7E66]">
+                            <ClipboardList size={14} className="text-[#4A675D] shrink-0" />
                             <span>Clinical Archives & Diagnostics</span>
                         </div>
                         <h2 className="text-3xl font-serif text-[#1A1F1E] tracking-tight">Your Clinical Report</h2>
                     </div>
-                    <div className="flex items-center gap-3 self-start sm:self-center">
-                        <Link href="/DiagnosisHistory" className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#4A675D] bg-white border border-[#DCE4E1] py-2.5 px-4 rounded shadow-sm hover:bg-gray-50 transition-all">
+
+                    {/* Right Side: Responsive Action Button Stack */}
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
+                        {id2 ? (
+                            <Link
+                                href={`/ReportDetails?id=${id2}`}
+                                className="flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider text-white bg-[#4A675D] border border-[#3d554c] py-2.5 px-4 rounded shadow-sm hover:bg-[#3d554c] transition-all whitespace-nowrap text-center"
+                            >
+                                <Home size={13} /> Feedback Report
+                            </Link>
+                        ) : (
+                            <button
+                                disabled
+                                className="flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-400 bg-gray-100 border border-gray-200 py-2.5 px-4 rounded cursor-not-allowed whitespace-nowrap text-center pointer-events-none"
+                            >
+                                <Home size={13} /> Feedback Report
+                            </button>
+                        )}
+
+                        <Link
+                            href="/DiagnosisHistory"
+                            className="flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider text-[#4A675D] bg-white border border-[#DCE4E1] py-2.5 px-4 rounded shadow-sm hover:bg-gray-50 transition-all whitespace-nowrap text-center"
+                        >
                             <Home size={13} /> Back to Diagnosis History
                         </Link>
                     </div>
                 </div>
-
                 {/* MAIN DOCUMENT FRAME */}
                 <div className={`bg-white shadow-2xl rounded border border-[#DCE4E1] overflow-hidden flex flex-col ${theme.glow}`}>
 
