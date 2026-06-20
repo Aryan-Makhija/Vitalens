@@ -807,7 +807,6 @@ export default function Phase2() {
 
     return (
         <div className="min-h-screen bg-[#FAF9F6] py-16 px-6">
-            <DashboardNavbar></DashboardNavbar>
             <div className="max-w-3xl mx-auto mb-10">
                 {/* Header */}
                 <header className="mb-12 text-center">

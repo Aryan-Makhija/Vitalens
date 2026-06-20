@@ -221,6 +221,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { UserButton, useClerk } from "@clerk/nextjs";
+import { VitaLensLogo } from "../vitalensLogo/logo";
 
 const DashboardNavbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -274,9 +275,7 @@ const DashboardNavbar = () => {
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20">
           {/* Brand Logo */}
           <Link href="/" className="flex items-center gap-2 group relative z-[110]">
-            <div className="w-9 h-9 rounded-lg bg-[#4A675D] flex items-center justify-center transition-transform group-hover:scale-105">
-              <Activity className="w-5 h-5 text-white" />
-            </div>
+            <VitaLensLogo></VitaLensLogo>
             <span className="font-serif font-bold text-xl text-[#1A1F1E] tracking-tight">
               VitaLens
             </span>
@@ -290,12 +289,12 @@ const DashboardNavbar = () => {
                 href={item.disabled ? "#" : item.href}
                 onClick={(e) => item.disabled && e.preventDefault()}
                 className={`relative group flex items-center gap-2 px-4 py-2 rounded-xl text-[13px] font-bold transition-all duration-300 ${item.cta
-                    ? "bg-[#4A675D] text-white shadow-lg shadow-[#4A675D]/20 ml-4 hover:scale-105"
-                    : item.active
-                      ? "text-[#4A675D] bg-[#E8F3EE]"
-                      : item.disabled
-                        ? "text-[#8B7E66]/40 cursor-not-allowed italic"
-                        : "text-[#5C6361] hover:text-[#4A675D] hover:bg-[#F0F4F2]"
+                  ? "bg-[#4A675D] text-white shadow-lg shadow-[#4A675D]/20 ml-4 hover:scale-105"
+                  : item.active
+                    ? "text-[#4A675D] bg-[#E8F3EE]"
+                    : item.disabled
+                      ? "text-[#8B7E66]/40 cursor-not-allowed italic"
+                      : "text-[#5C6361] hover:text-[#4A675D] hover:bg-[#F0F4F2]"
                   }`}
               >
                 <item.icon className={`w-4 h-4 ${item.disabled ? "opacity-30" : "opacity-100"}`} />
@@ -363,12 +362,12 @@ const DashboardNavbar = () => {
                       }
                     }}
                     className={`flex items-center justify-between w-full p-4 rounded-xl text-sm font-bold transition-all ${item.cta
-                        ? "bg-[#4A675D] text-white shadow-md text-center justify-center mt-2"
-                        : item.active
-                          ? "text-[#4A675D] bg-[#E8F3EE]"
-                          : item.disabled
-                            ? "text-[#8B7E66]/40 cursor-not-allowed italic bg-gray-50/50"
-                            : "text-[#5C6361] hover:bg-gray-50"
+                      ? "bg-[#4A675D] text-white shadow-md text-center justify-center mt-2"
+                      : item.active
+                        ? "text-[#4A675D] bg-[#E8F3EE]"
+                        : item.disabled
+                          ? "text-[#8B7E66]/40 cursor-not-allowed italic bg-gray-50/50"
+                          : "text-[#5C6361] hover:bg-gray-50"
                       }`}
                   >
                     <div className="flex items-center gap-3">

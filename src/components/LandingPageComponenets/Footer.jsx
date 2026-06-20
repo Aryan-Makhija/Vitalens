@@ -1,62 +1,8 @@
-// import { Activity } from "lucide-react";
-
-// const Footer = () => (
-//   <footer className="border-t border-border/50 bg-secondary/30">
-//     <div className="container mx-auto px-6 py-12">
-//       <div className="grid md:grid-cols-4 gap-8">
-//         <div className="md:col-span-1">
-//           <div className="flex items-center gap-2 mb-4">
-//             <div className="w-8 h-8 rounded-lg gradient-cta flex items-center justify-center">
-//               <Activity className="w-4 h-4 text-primary-foreground" />
-//             </div>
-//             <span className="font-display font-bold text-lg text-foreground">VitaLens</span>
-//           </div>
-//           <p className="text-sm text-muted-foreground leading-relaxed">
-//             AI-powered health intelligence for early detection and personalized wellness guidance.
-//           </p>
-//         </div>
-
-//         {[
-//           { title: "Product", links: ["Features", "How It Works", "Pricing", "API"] },
-//           { title: "Company", links: ["About Us", "Blog", "Careers", "Contact"] },
-//           { title: "Legal", links: ["Privacy Policy", "Terms of Service", "HIPAA Compliance", "Security"] },
-//         ].map((col) => (
-//           <div key={col.title}>
-//             <h4 className="font-display font-semibold text-foreground mb-4 text-sm">{col.title}</h4>
-//             <ul className="space-y-2.5">
-//               {col.links.map((link) => (
-//                 <li key={link}>
-//                   <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-//                     {link}
-//                   </a>
-//                 </li>
-//               ))}
-//             </ul>
-//           </div>
-//         ))}
-//       </div>
-
-//       <div className="border-t border-border/50 mt-10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-//         <p className="text-xs text-muted-foreground">
-//           © 2026 VitaLens. All rights reserved.
-//         </p>
-//         <div className="flex items-center gap-6">
-//           {["Twitter", "LinkedIn", "GitHub"].map((social) => (
-//             <a key={social} href="#" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
-//               {social}
-//             </a>
-//           ))}
-//         </div>
-//       </div>
-//     </div>
-//   </footer>
-// );
-
-// export default Footer;
 
 "use client"
 
 import { Activity, Github, Linkedin, Twitter } from "lucide-react";
+import { VitaLensLogo } from "../vitalensLogo/logo";
 
 const Footer = () => {
   const footerLinks = [
@@ -73,9 +19,7 @@ const Footer = () => {
           {/* Brand Identity Column */}
           <div className="md:col-span-2 lg:col-span-2">
             <div className="flex items-center gap-2 mb-6">
-              <div className="w-10 h-10 rounded-xl bg-[#4A675D] flex items-center justify-center shadow-lg shadow-[#4A675D]/10">
-                <Activity className="w-5 h-5 text-[#F7F3E9]" />
-              </div>
+             <VitaLensLogo>F</VitaLensLogo>
               <span className="font-serif font-bold text-2xl text-[#2D3331] tracking-tight">
                 VitaLens
               </span>
