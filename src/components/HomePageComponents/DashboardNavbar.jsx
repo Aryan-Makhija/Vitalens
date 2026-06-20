@@ -225,27 +225,44 @@ import { VitaLensLogo } from "../vitalensLogo/logo";
 
 const DashboardNavbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [userhistory, setuserhistory] = useState([]);
+  const [hasCompletedFirstDiagnosis, sethasCompletedFirstDiagnosis] = useState(false);
   const { openUserProfile } = useClerk(); // Clerk modal manager hook
 
-  const userdetails = async () => {
+  const gethistory = async () => {
     try {
       const result = await fetch("/api/DiagnosisHistory", {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
-      const data = await result.json();
-      setuserhistory(data.Allhistory || []);
+      const data = await response.json();
+      const completed =
+        data.Allhistory && data.Allhistory.length > 0;
+
+      sethasCompletedFirstDiagnosis(completed);
+
+      if (completed) {
+        localStorage.setItem(
+          "hasCompletedFirstDiagnosis",
+          "true"
+        );
+      }
     } catch (err) {
       console.error("Failed to fetch history:", err);
     }
   };
 
   useEffect(() => {
-    userdetails();
+    const hasDiagnosis = localStorage.getItem(
+      "hasCompletedFirstDiagnosis"
+    );
+    if (hasDiagnosis === "true") {
+      sethasCompletedFirstDiagnosis(true);
+    } else {
+      gethistory();
+    }
   }, []);
 
-  const hasHistory = userhistory.length > 0;
+  const hasHistory = hasCompletedFirstDiagnosis
 
   const navItems = [
     { label: "My Dashboard", icon: LayoutDashboard, href: "#", active: true },

@@ -20,8 +20,16 @@ const DashboardHero = () => {
         headers: { "Content-Type": "application/json" },
       });
       const data = await response.json();
-      if (data.Allhistory && data.Allhistory.length > 0) {
-        sethasCompletedFirstDiagnosis(true);
+      const completed =
+        data.Allhistory && data.Allhistory.length > 0;
+
+      sethasCompletedFirstDiagnosis(completed);
+
+      if (completed) {
+        localStorage.setItem(
+          "hasCompletedFirstDiagnosis",
+          "true"
+        );
       }
     } catch (err) {
       console.error(err.message);
@@ -29,9 +37,17 @@ const DashboardHero = () => {
       setIsLoading(false);
     }
   };
-
   useEffect(() => {
-    gethistory();
+    const hasDiagnosis = localStorage.getItem(
+      "hasCompletedFirstDiagnosis"
+    );
+
+    if (hasDiagnosis === "true") {
+      sethasCompletedFirstDiagnosis(true);
+      setIsLoading(false);
+    } else {
+      gethistory();
+    }
   }, []);
 
   // MODERN SHIMMER SKELETON REPLACEMENT
@@ -74,7 +90,7 @@ const DashboardHero = () => {
 
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          
+
           {/* Action Copy Content Side */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}

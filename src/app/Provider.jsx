@@ -10,53 +10,22 @@ import React, { useEffect, useState } from 'react'
 const Provider = ({ children }) => {
 
 
-    const { user } = useUser()
 
-
-    const [userdetails, setuserdetails] = useState()
-
-    const loginuser = async () => {
-
-
-        try {
-
-            const response = await fetch("/api/user", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    name: user?.fullName,
-                    email: user?.primaryEmailAddress?.emailAddress
-
-                })
-
-            })
-
-            // console.log(response.data)
-            setuserdetails(response.data)
-
-        } catch (err) {
-            console.log(err.message)
-        }
-
-    }
-
-
-    const [layer1data, setlayer1data] = useState({})
-    const [form1Id, setform1Id] = useState()
-    const [form2Id, setform2Id] = useState()
-    const [layer2Id, setlayer2Id] = useState()
+    const { isSignedIn } = useUser();
 
     useEffect(() => {
-        user && loginuser()
-    }, [user])
+        if (!isSignedIn) {
+            localStorage.removeItem(
+                "hasCompletedFirstDiagnosis"
+            );
+        }
+    }, [isSignedIn]);
 
-
-
-
+    const [layer1data, setlayer1data] = useState({})
 
     return (
-        <UserDetails.Provider value={{ userdetails, setuserdetails }}>
-            <Layer1Response.Provider value={{ layer1data, setlayer1data, form1Id, setform1Id, form2Id, setform2Id, layer2Id, setlayer2Id }}>
+        <UserDetails.Provider>
+            <Layer1Response.Provider value={{ layer1data, setlayer1data }}>
 
                 <div>
 
