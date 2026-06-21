@@ -1,14 +1,18 @@
 
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import {
-    AlertTriangle, Calendar, Brain, ChevronRight,
-    LayoutDashboard, Circle, Home, CheckCircle2, Zap
+    ShieldCheck, Zap, AlertTriangle, Activity, CheckCircle, Info,
+    Calendar, Brain, ChevronRight, LayoutDashboard, Circle, Home, FileText,
+    Clock, Printer, ShieldAlert, HeartPulse, ClipboardList, X,
+    RefreshCw,
+    CheckCircle2
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Footer from "@/components/LandingPageComponenets/Footer";
+import { clearFormCookies } from "@/app/api/DeleteIds/route";
 
 
 export default function FinalReportPage() {
@@ -20,6 +24,7 @@ export default function FinalReportPage() {
     const [postivesignals, setpositivesignals] = useState([]);
     const [suggestions, setsuggestions] = useState([]);
     const [alreadyGenerated, setAlreadyGenerated] = useState(false);
+    const [diagnosisTimestamp, setDiagnosisTimestamp] = useState("");
     const router = useRouter();
 
     const hasRun = useRef(false);
@@ -84,6 +89,18 @@ export default function FinalReportPage() {
 
             setReportData(finalResult);
 
+            if (finalResult.updatedAt) {
+                const dateObj = new Date(finalResult.updatedAt);
+                const formattedDate = dateObj.toLocaleString('en-US', {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                });
+                setDiagnosisTimestamp(formattedDate);
+            }
             // Lock the session so reload doesn't trigger the API again
             localStorage.setItem("report_generated", "true");
 
@@ -113,21 +130,12 @@ export default function FinalReportPage() {
         // Clear session lock if navigating away so user can start a fresh flow later
         try {
 
-            const response = await fetch("/api/DeleteIds", {
-                method: "GET",
-                credentials: "include",
-                headers: { "Content-Type": "application/json" }
-            })
+            await clearFormCookies()
 
-            if (response.ok) {
-
-                localStorage.removeItem("report_generated");
-                localStorage.removeItem("phase2_completed")
-                localStorage.removeItem("phase1AnalysisCompleted")
-                router.push("/HomePage");
-
-            }
-
+            localStorage.removeItem("report_generated");
+            localStorage.removeItem("phase2_completed")
+            localStorage.removeItem("phase1AnalysisCompleted")
+            router.push("/HomePage");
 
         } catch (err) {
             console.log(err.message);

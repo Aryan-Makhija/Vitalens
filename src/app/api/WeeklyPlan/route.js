@@ -41,7 +41,6 @@ export async function GET(request) {
             .limit(1)
 
 
-        // console.log(plan)
         if (!plan || !plan.startedAt) {
             return NextResponse.json(
                 { error: "Plan not started yet" },
@@ -59,7 +58,7 @@ export async function GET(request) {
 
         const now = new Date();
         const startDate = new Date(plan.startedAt);
-        console.log(startDate)
+        // console.log(startDate)
 
         // Convert both to IST calendar dates
         const todayIST = new Date(

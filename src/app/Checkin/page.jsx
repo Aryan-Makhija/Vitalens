@@ -224,6 +224,7 @@ import { Layer1Response } from "@/Context/Layer1Response";
 import { useRouter } from "next/navigation";
 import Footer from "@/components/LandingPageComponenets/Footer";
 import DashboardNavbar from "@/components/HomePageComponents/DashboardNavbar";
+import { clearFormCookies } from "../api/DeleteIds/route";
 
 const Checkin = () => {
     const [step, setStep] = useState(1);
@@ -357,24 +358,38 @@ const Checkin = () => {
         }
     };
 
-    const handleReload = async () => {
-        try {
-            await fetch("/api/DeleteIds", {
-                method: "GET",
-                credentials: "include",
-                headers: { "Content-Type": "application/json" }
-            });
-            localStorage.removeItem("phase1AnalysisCompleted");
-            router.push("/HomePage");
-        } catch (err) {
-            console.log(err.message);
-            router.push("/HomePage");
-        }
+    // const handleReload = async () => {
+    //     try {
+    //         await fetch("/api/DeleteIds", {
+    //             method: "GET",
+    //             credentials: "include",
+    //             headers: { "Content-Type": "application/json" }
+    //         });
+    //         localStorage.removeItem("phase1AnalysisCompleted");
+    //         router.push("/HomePage");
+    //     } catch (err) {
+    //         console.log(err.message);
+    //         router.push("/HomePage");
+    //     }
 
-        setTimeout(() => {
-            window.location.reload();
-        }, 1000);
-    };
+    //     setTimeout(() => {
+    //         window.location.reload();
+    //     }, 1000);
+    // };
+
+
+    const handleReload = async () => {
+  try {
+    await clearFormCookies(); // 👈 no API call
+
+    localStorage.removeItem("phase1AnalysisCompleted");
+
+    router.push("/HomePage");
+  } catch (err) {
+    console.log(err.message);
+    router.push("/HomePage");
+  }
+};
 
     const backtohome = async () => {
         try {

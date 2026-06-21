@@ -553,6 +553,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Footer from "@/components/LandingPageComponenets/Footer";
 import DashboardNavbar from "@/components/HomePageComponents/DashboardNavbar";
+import { clearFormCookies } from "@/app/api/DeleteIds/route";
 
 export default function Phase2() {
     const { layer1data } = useContext(Layer1Response);
@@ -719,12 +720,7 @@ export default function Phase2() {
 
     const backtohome = async () => {
         try {
-            // localStorage.setItem("phase2_completed", "false"); // Reset on restart
-            await fetch("/api/DeleteIds", {
-                method: "GET",
-                credentials: "include",
-                headers: { "Content-Type": "application/json" },
-            });
+            await clearFormCookies();
             localStorage.removeItem("phase2_completed")
             localStorage.removeItem("phase1AnalysisCompleted")
             router.push("/HomePage");
