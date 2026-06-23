@@ -26,7 +26,7 @@ export default function TaskFeedbackPage({ }) {
     const searchParams = useSearchParams();
     const weeklyplanId = searchParams.get('planid');
     const finalLayerId = searchParams.get('id');
-    // console.log(weeklyplanId)
+
     const [step, setStep] = useState(1);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [report, setReport] = useState(null);
@@ -61,7 +61,7 @@ export default function TaskFeedbackPage({ }) {
             const data = await response.json();
             setReport(data.report);
 
-            console.log(formData)
+       
         } catch (err) {
             console.error("Submission failed", err);
         } finally {

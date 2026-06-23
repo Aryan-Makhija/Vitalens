@@ -19,7 +19,7 @@ const Form1 = () => {
   const [form2, setform2] = useState(false)
 
   const { setlayer1data, form1Id, setform1Id, layer1data } = useContext(Layer1Response);
-  // console.log(layer1data)
+
   const [formData, setFormData] = useState({
     age: "",
     gender: "male",

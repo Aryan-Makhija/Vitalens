@@ -58,7 +58,7 @@ export default function WeeklyPlanPage() {
                         setIsInitialLoading(false);
                     }
                 } else {
-                    console.log(response.error)
+             
                     setIsInitialLoading(false);
                 }
             } catch (err) {
@@ -138,7 +138,7 @@ export default function WeeklyPlanPage() {
             });
 
             if (response.ok) {
-                console.log("handle api called ")
+              
                 setIsEnrolled(true);
                 setShowModal(false);
                 await fetchWeeklyPlan();

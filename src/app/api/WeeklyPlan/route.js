@@ -45,16 +45,10 @@ export async function GET(request) {
         }
 
         // 🔹 Calculate current unlocked day
-        // const today = new Date();
-        // const startDate = new Date(plan.startedAt);
-
-
-        // const diffTime = today.getTime() - startDate.getTime();
-        // const daysPassed = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
         const now = new Date();
         const startDate = new Date(plan.startedAt);
-        // console.log(startDate)
+
 
         // Convert both to IST calendar dates
         const todayIST = new Date(
