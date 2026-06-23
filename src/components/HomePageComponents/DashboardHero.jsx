@@ -7,48 +7,11 @@ import { ArrowRight, Sparkles, Activity, FileText, PlayCircle } from "lucide-rea
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const DashboardHero = () => {
-  const [hasCompletedFirstDiagnosis, sethasCompletedFirstDiagnosis] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+const DashboardHero = ({hasCompletedFirstDiagnosis,isLoading}) => {
+
   const { user } = useUser();
   const name = user?.firstName;
 
-  const gethistory = async () => {
-    try {
-      const response = await fetch("/api/DiagnosisHistory", {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
-      const data = await response.json();
-      const completed =
-        data.Allhistory && data.Allhistory.length > 0;
-
-      sethasCompletedFirstDiagnosis(completed);
-
-      if (completed) {
-        localStorage.setItem(
-          "hasCompletedFirstDiagnosis",
-          "true"
-        );
-      }
-    } catch (err) {
-      console.error(err.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  useEffect(() => {
-    const hasDiagnosis = localStorage.getItem(
-      "hasCompletedFirstDiagnosis"
-    );
-
-    if (hasDiagnosis === "true") {
-      sethasCompletedFirstDiagnosis(true);
-      setIsLoading(false);
-    } else {
-      gethistory();
-    }
-  }, []);
 
   // MODERN SHIMMER SKELETON REPLACEMENT
   if (isLoading) {

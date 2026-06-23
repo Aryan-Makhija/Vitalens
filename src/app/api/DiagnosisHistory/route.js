@@ -1,6 +1,6 @@
 import db from "@/lib/config/db";
 import { diagnosisHistory, finalResultsTable, layer1ResultsTable } from "@/lib/config/schema";
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { currentUser } from "@clerk/nextjs/server";
 import { desc, eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
@@ -12,12 +12,7 @@ export async function POST(request) {
 
     try {
 
-        const { userId } = await auth();
-
-        if (!userId) {
-            return new Response("Unauthorized", { status: 401 });
-        }
-
+    
 
         const { layer2ReportId, finalResultsId } = await request.json();
 

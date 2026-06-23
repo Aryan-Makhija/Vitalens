@@ -11,20 +11,21 @@ const Provider = ({ children }) => {
 
 
 
-    const { isSignedIn } = useUser();
+    const { isLoaded, isSignedIn } = useUser();
 
     useEffect(() => {
-        if (!isSignedIn) {
+        if (!isLoaded) return;
+
+        if (isLoaded && isSignedIn === false) {
             localStorage.removeItem(
                 "hasCompletedFirstDiagnosis"
             );
         }
-    }, [isSignedIn]);
-
+    }, [isLoaded, isSignedIn]);
     const [layer1data, setlayer1data] = useState({})
 
     return (
-        <UserDetails.Provider>
+        <UserDetails.Provider value={{}}>
             <Layer1Response.Provider value={{ layer1data, setlayer1data }}>
 
                 <div>
