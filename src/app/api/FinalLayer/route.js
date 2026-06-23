@@ -1,6 +1,6 @@
 import db from "@/lib/config/db";
 import { diagnosisHistory, finalResultsTable, layer2Reports } from "@/lib/config/schema";
-import { currentUser } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 
 import { GoogleGenAI } from "@google/genai";
 import { desc, eq } from "drizzle-orm";
@@ -118,6 +118,11 @@ export async function POST(request) {
     try {
         // const { id } = await params;
 
+        const { userId } = await auth();
+
+        if (!userId) {
+            return NextResponse.json("Unauthorized", { status: 401 });
+        }
 
         const cookieStore = await cookies();
 

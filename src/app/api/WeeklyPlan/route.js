@@ -21,10 +21,6 @@ export async function GET(request) {
             );
         }
 
-        // console.log(user?.primaryEmailAddress?.emailAddress);
-
-
-        // const { day } = await params
         const { searchParams } = new URL(request.url);
         const requestedDay = searchParams.get("day");
 

@@ -9,6 +9,7 @@ export async function GET() {
 
     try {
 
+
         const user = await currentUser()
 
 

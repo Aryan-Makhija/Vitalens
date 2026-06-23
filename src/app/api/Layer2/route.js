@@ -196,10 +196,6 @@ RETURN JSON ONLY USING THIS SCHEMA:
 export async function POST(request) {
     try {
         // Auhtentication
-        // const {userId} = auth();
-        // if(!userId){ 
-        //      return NextResponse.json({error:"Unauthorized"},{status:401})
-        // }
 
 
         const cookieStore = await cookies();

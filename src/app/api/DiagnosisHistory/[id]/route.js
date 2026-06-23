@@ -10,9 +10,6 @@ export async function GET(_, { params }) {
 
     try {
 
-        const { id } = await params;
-
-
         const user = await currentUser();
 
         if (!user) {
@@ -21,6 +18,9 @@ export async function GET(_, { params }) {
                 { status: 401 }
             );
         }
+        const { id } = await params;
+
+
 
         if (!historyid) {
             return NextResponse.json(

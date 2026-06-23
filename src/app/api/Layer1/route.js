@@ -84,10 +84,10 @@ export async function POST(req) {
 
   //Auhthentication
 
-  // const { userId } = await auth();
-  // if (!userId) {
-  //   return NextResponse.json({ error: "Unauhorized" }, { status: 401 });
-  // }
+  const { userId } = await auth();
+  if (!userId) {
+    return NextResponse.json({ error: "Unauhorized" }, { status: 401 });
+  }
 
 
   const cookieStore = await cookies()

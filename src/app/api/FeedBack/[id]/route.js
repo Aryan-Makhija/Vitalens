@@ -1,7 +1,7 @@
 
 import db from "@/lib/config/db";
 import { layer2WeekPlanCandidates, weeklyFeedbackFormTable } from "@/lib/config/schema";
-import { currentUser } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
@@ -12,13 +12,12 @@ export async function GET(_, { params }) {
 
     try {
 
-        const user = await currentUser()
 
+        const { userId } = await auth();
 
-        if (!user) {
-            return NextResponse.json({ message: "Unauthorized user" }, { status: 401 })
+        if (!userId) {
+            return NextResponse.json("Unauthorized", { status: 401 });
         }
-
 
         const { id } = await params;
 
