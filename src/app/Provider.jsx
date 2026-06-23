@@ -20,6 +20,7 @@ const Provider = ({ children }) => {
             localStorage.removeItem(
                 "hasCompletedFirstDiagnosis"
             );
+            localStorage.removeItem("userEnrolled");
         }
     }, [isLoaded, isSignedIn]);
     const [layer1data, setlayer1data] = useState({})

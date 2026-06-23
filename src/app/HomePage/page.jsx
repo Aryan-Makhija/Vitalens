@@ -5,6 +5,7 @@ import GuidancePanel from '@/components/HomePageComponents/GuidancePanel'
 import WorkflowSection from '@/components/HomePageComponents/WorkflowSection'
 import Footer from '@/components/LandingPageComponenets/Footer'
 import { useEffect, useState } from 'react'
+import { GetUser } from '../api/user/getuser/route'
 
 
 const HomePage = () => {
@@ -12,6 +13,28 @@ const HomePage = () => {
         useState(false);
 
     const [isLoading, setIsLoading] = useState(true);
+    const [userEnrolled, setuserEnrolled] = useState(false);
+
+    useEffect(() => {
+        const userStatus = async () => {
+            const storedValue = localStorage.getItem("userEnrolled");
+
+            if (storedValue !== null) {
+                setuserEnrolled(storedValue === "true");
+                return;
+            }
+
+            const userDetails = await GetUser();
+
+            setuserEnrolled(userDetails.isUserEnrolled);
+            localStorage.setItem(
+                "userEnrolled",
+                String(userDetails.isUserEnrolled)
+            );
+        };
+
+        userStatus();
+    }, []);
 
 
     useEffect(() => {
@@ -53,7 +76,7 @@ const HomePage = () => {
     return (
         <div className="min-h-screen bg-background">
             <DashboardNavbar hasCompletedFirstDiagnosis={hasCompletedFirstDiagnosis} />
-            <DashboardHero hasCompletedFirstDiagnosis={hasCompletedFirstDiagnosis} isLoading={isLoading} />
+            <DashboardHero hasCompletedFirstDiagnosis={hasCompletedFirstDiagnosis} isLoading={isLoading} userEnrolled={userEnrolled} />
             <WorkflowSection />
             <GuidancePanel />
             <Footer />
