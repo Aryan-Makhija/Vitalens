@@ -4,6 +4,8 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { ArrowRight, Sparkles, Shield } from "lucide-react";
+import Link from "next/link";
+import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 
 const CTASection = () => {
     const ref = useRef(null);
@@ -60,14 +62,35 @@ const CTASection = () => {
                         </p>
 
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-                            <motion.button
-                                whileHover={{ scale: 1.03, backgroundColor: "#FAF9F6" }}
-                                whileTap={{ scale: 0.98 }}
-                                className="bg-[#F7F3E9] text-[#4A675D] px-10 py-5 rounded-2xl text-base font-bold shadow-xl flex items-center gap-3 group transition-colors"
-                            >
-                                Begin Free Assessment
-                                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                            </motion.button>
+                            <SignedOut>
+                                <SignInButton mode="modal">
+
+                                    <motion.button
+                                        whileHover={{ scale: 1.03, backgroundColor: "#FAF9F6" }}
+                                        whileTap={{ scale: 0.98 }}
+                                        className="bg-[#F7F3E9] text-[#4A675D] px-10 py-5 rounded-2xl text-base font-bold shadow-xl flex items-center gap-3 group transition-colors"
+                                    >
+                                        Begin Free Assessment
+                                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                    </motion.button>
+                                </SignInButton>
+                            </SignedOut>
+
+
+                            <SignedIn>
+                                <Link href="/HomePage">
+                                    <motion.button
+                                        whileHover={{ scale: 1.03, backgroundColor: "#FAF9F6" }}
+                                        whileTap={{ scale: 0.98 }}
+                                        className="bg-[#F7F3E9] text-[#4A675D] px-10 py-5 rounded-2xl text-base font-bold shadow-xl flex items-center gap-3 group transition-colors"
+                                    >
+                                        Begin Free Assessment
+                                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                    </motion.button>
+
+                                </Link>
+                            </SignedIn>
+
 
                             <div className="flex items-center gap-2 text-[#E8F3EE]/60">
                                 <Shield className="w-4 h-4" />
