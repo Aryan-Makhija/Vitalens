@@ -445,7 +445,4 @@ Vitalens is an early-stage health assessment and wellness monitoring platform in
 The platform does not replace professional medical diagnosis, treatment, or emergency healthcare services. Users experiencing severe symptoms or classified under the Critical (Red) category should consult qualified healthcare professionals immediately.
 
 ---
-
-# 👥 Contributors
-
-Built with ❤️ to make preventive healthcare more accessible, intelligent, and safer through responsible AI.
+Built with ❤️ by Aryan Makhija to make preventive healthcare more accessible, intelligent, and safer through responsible AI.
