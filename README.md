@@ -1,6 +1,13 @@
 # Vitalens 
 
 > AI-Powered Early Health Diagnosis & Wellness Monitoring Platform
+>
+> ## Problem Statement – Vitalens
+Many people fail to identify potential health problems at an early stage due to a lack of continuous health monitoring, limited awareness of risk factors, and delayed access to personalized healthcare guidance. Traditional symptom checkers often provide generic recommendations without considering a user's complete medical history, daily health vitals, lifestyle habits, or the severity of symptoms. Additionally, the absence of continuous wellness tracking and proper risk assessment can lead to delayed medical attention and ineffective preventive care.
+
+Vitalens addresses this problem by providing an AI-powered early health assessment and wellness monitoring platform that analyzes users' health data, symptoms, lifestyle patterns, and medical background to identify potential health risks, classify users according to their risk levels, and generate personalized wellness recommendations. It also detects inconsistent or insufficient information, requests additional details when necessary, and escalates high-risk cases to healthcare professionals to reduce the risk of unsafe AI-generated advice. Through continuous health monitoring, progress tracking, and historical health reports, Vitalens aims to encourage preventive healthcare, support informed health decisions, and promote timely medical consultation.
+
+In short: Vitalens solves the problem of delayed health risk identification and the lack of personalized, continuous wellness monitoring by offering a structured, AI-assisted system for early risk assessment, preventive care, and appropriate medical escalation.
 
 ## Overview
 
